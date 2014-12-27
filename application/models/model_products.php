@@ -18,20 +18,22 @@ class Model_products extends CI_Model {
         return $query->result_array();
     }
 
-    public function getAllProductsByBrand($brand_id,$category_id){
-        $where_sort = $category_id != '' ? 'AND p.categories_cat_id = "'.$category_id.'"' : '';
+    public function getAllProductsByBrand($brand_id,$sub_category_id,$specific_category_id){
+        $sub_category_sort = $sub_category_id != '' ? 'AND sub.sub_cat_id = "'.$sub_category_id.'"' : '';
+        $specific_category_sort = $specific_category_id != '' ? 'AND p.categories_cat_id = "'.$specific_category_id.'"' : '';
         $query_string = '
                         SELECT c.color_id, c.color_name, c.color_photo_url, p.prod_name, p.prod_price_ret, 
                                 p.prod_short_description, s.spec_cat_name
-                        FROM products p JOIN colors c JOIN specific_categories s
+                        FROM products p JOIN colors c JOIN specific_categories s JOIN sub_categories sub
                         ON p.prod_id = c.products_prod_id 
                         AND p.categories_cat_id = s.spec_cat_id
+                        AND s.sub_categories_sub_cat_id = sub.sub_cat_id
                         WHERE p.brands_brand_id = '.$brand_id.'
-                        '.$where_sort.'
+                        '.$specific_category_sort.'
+                        '.$sub_category_sort.'
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         ';
-
 
         $query = $this->db->query($query_string);
         return $query->result();

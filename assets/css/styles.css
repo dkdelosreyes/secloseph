@@ -563,18 +563,69 @@ body {
 		color: white; }
 
 
-#page-content-wrapper ul.popular { 
+/* -- REPLACED BY THE CODE BELOW DUE TO SOME SAFARI [UL,LI] ISSUE - by dk  */
+/*#page-content-wrapper ul.popular { 
 	list-style: none; 
 	padding: 0;
 	margin: 0; }
 #page-content-wrapper ul.popular li { display: inline-block; }
 #page-content-wrapper ul.popular li img { 
 	width: 80px;
-	/*border: 1px solid #EBECE8;*/
 	padding: 2px; }
 #page-content-wrapper ul.popular li div { 
-	/*width: 80px;*/
-	border: 1px solid #EBECE8;
-	/*padding: 2px; }*/
+	border: 1px solid #EBECE8;}*/
+
+
+#page-content-wrapper .brands-banner-right{ padding-left:10px }
+	#page-content-wrapper .brands-banner-right h1{
+		font-weight: 0; 
+		font-family: bebas; 
+		color: darkred; }
+	#page-content-wrapper .brands-banner-right .label{
+		color: #8b0000; }
+	#page-content-wrapper .brands-banner-right .col-md-2{
+			padding:5px;
+			margin-left:5px;
+			margin-bottom: 5px;
+			height:185px;
+			overflow:hidden;
+			border: 1px solid #EBECE8;}
+	#page-content-wrapper .brands-banner-right .col-md-2 img{
+				width: 100%;}
+
+
+/* ======= MEDIA QUERIES */
+@media screen and (max-width: 1280px){
+	#page-content-wrapper .brands-banner-right .col-md-2{
+		height:110px;}
+}
+@media screen and (max-width: 980px) {
+    #page-content-wrapper .brands-banner-right .col-md-2{
+		height:155px;}
+}
+@media screen and (max-width: 800px) {
+	#page-content-wrapper .brands-banner-right .col-md-2{
+		height:110px;}
+}
+@media screen and (max-width: 360px) {
+    #page-content-wrapper .brands-banner-right .col-md-2{
+		height:68px;}
+}
+@media screen and (max-width: 320px) {
+    #page-content-wrapper .brands-banner-right .col-md-2{
+		height:55px;}
+}
+	
+
+
+
+
+
+
+
+
+
+
+
 
 

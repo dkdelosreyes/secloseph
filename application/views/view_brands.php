@@ -60,20 +60,21 @@
 								<li class="sidebar-brand">
 									 <img src="<?php echo base_url('assets/img').'/'.$brand_url.'.png'?>" alt="" class="img-responsive">
 								</li>
-								<!-- <li><a href="#">Dashboard</a>
-								</li>
-								<li><a href="#">Shortcuts</a>
-								</li>
-								<li><a href="#">Overview</a>
-								</li>
-								<li><a href="#">Events</a>
-								</li>
-								<li><a href="<?php echo site_url('home/about')?>">About</a>
-								</li>
-								<li><a href="#">Services</a>
-								</li>
-								<li><a href="<?php echo site_url('home/contact')?>">Contact</a>
-								</li> -->
+
+								<?php
+									if(!empty($sub_categories)){
+				                    	foreach($sub_categories as $p):?>
+				                    		<li><a href="<?echo $controller_link.'/sub/'.$p->sub_cat_id?>">
+				                   				<?echo $p->sub_cat_name.br();?></a>
+											</li>
+				           				<?endforeach;
+				                   	}else{?>
+										<li><a href="#">
+			                   				No Categories under this brand</a>
+										</li>
+				           				<?
+				                   	}
+								?>
 							</ul>
 						</div>
 						
@@ -82,40 +83,35 @@
 						
 							
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6 brands-banner-left">
 									<a id="menu-toggle" href="#" class="btn btn-default"><span class="glyphicon glyphicon-th-list"></span></a>
 									<img src="<?php echo base_url('assets/img/'.$brand_photo_url); ?>" alt="" class="img-responsive">
 
 								</div>
-								<div class="col-md-6">
-									<h1 style="font-weight: 0; font-family: bebas; color: darkred;"><?php echo $brand_name?></h1>
+
+								<div class="col-md-6 brands-banner-right">
+									<h1><?php echo $brand_name?></h1>
 									<hr>
 									<p>
 										<?php echo $brand_description ?>
-
 									</p>
-									<span class="label" style="color: #8b0000;">RECENT ITEMS</span>
-
+									<span class="label">RECENT ITEMS</span>
 									<hr>
-									<ul class="popular">
-										<?
-											if(!empty($top_recent_products)){
-		                    					foreach($top_recent_products as $p):?>
+									<?
+										if(!empty($top_recent_products)){
+		                    				foreach($top_recent_products as $p):?>
 
-		                    						<li><a href="<?php echo base_url('products/viewProduct/'.$p['color_id'])?>">
-		                    								<div style="height:110px;overflow:hidden">
-		                    									<img src="<?php echo base_url('assets/products/'.$p['color_photo_url'])?>" alt="">
-		                    								</div>
-		                    							</a>
-		                    						</li>
+		                    					<div class="col-md-2 col-xs-2">
+		                    						<a href="<?php echo base_url('products/viewProduct/'.$p['color_id'])?>">
+		                    							<img src="<?php echo base_url('assets/products/'.$p['color_photo_url'])?>" alt="">
+		                    						</a>
+		                    					</div>
 
-			                    				<?endforeach; 
-		                    				}else{
-		                    					echo "<li>No Products Yet</ul>";
-		                    				}
-		                    			?>
-			                    				
-									</ul>
+			                   				<?endforeach; 
+		                    			}else{
+		                   					echo "<li>No Products Yet</ul>";
+		                   				}
+		                   			?>
 								</div>
 							</div>
 							<div class="row">
@@ -133,7 +129,7 @@
 								<div class="col-md-12">
 									Sort by category: <select name="sort-category" id="sort-category">
 										<option value="">Select Category</option>
-										<option value="all">All Categories</option>
+										<option value="">All Categories</option>
 										<?php
 										if(!empty($specific_categories)){
 				                    		foreach($specific_categories as $p):?>
@@ -254,7 +250,8 @@
 		// FOR SORT====================================================
 		$("#sort-category").change(function(){
 			var category_id = $('option:selected', this).attr('value');
-			document.location = "<?php echo $controller_link?>/"+category_id;
+			// document.location = "<?php echo $controller_link?>/"+category_id;
+			document.location = "<?php echo $current_link?>/specific/"+category_id;
 		});
 
 	});

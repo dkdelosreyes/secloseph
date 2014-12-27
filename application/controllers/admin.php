@@ -65,6 +65,7 @@ class Admin extends CI_Controller {
 			$crud->set_subject('Brands');
 
 			$crud->set_field_upload('brand_photo_url','assets/img');
+			$crud->set_relation('main_categories_main_cat_id','main_categories','main_cat_name');
 
 			if ($crud->getState() == 'add' || $crud->getState() == 'insert') {
                 $crud->callback_add_field('brand_description',array($this,'brand_description_textarea'));

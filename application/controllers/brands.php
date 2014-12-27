@@ -10,44 +10,49 @@ class Brands extends CI_Controller {
 		$this->load->model('model_items');
 		$this->load->model("model_brands");
 		$this->load->model('model_specific_categories');
+		$this->load->model('model_sub_categories');
 		
 		$brands = $this->db->get('brands')->result();
 	} # End construct
 
 	public function index($id) {
-		$brand_id = $this->uri->segment(2);
+		$sort_specific_category_id  = '';
+		$sort_sub_category_id  = '';
 
-		//brand info
+		$get = $this->uri->uri_to_assoc(); # transform uri to array
+
+		$brand_id = $this->uri->segment(2);
+		$sort_specific_category_id = isset($get['specific']) ? $get['specific'] : '';
+		$sort_sub_category_id = isset($get['sub']) ? $get['sub'] : '';
+
+		# brand info
 		$brand = $this->model_brands->get_brand_by_id($brand_id);
 
 		# Declare data
 		$data['page_title'] = $brand->brand_name;
 		$data['specific_categories'] = $this->model_specific_categories->getSpecificCategories();
+		$data['sub_categories'] = $this->model_sub_categories->getSubCategories($brand_id);
 		$data['latest_products'] = $this->model_products->getLatestProducts();
 
-		$data['brand_id'] = $brand->brand_id;
-		$data['brand_url'] = $brand->brand_url;
-		$data['brand_photo_url'] = $brand->brand_photo_url;
-		$data['brand_name'] = $brand->brand_name;
+		$data['brand_id'] = $brand->brand_id; 						# ex. 1
+		$data['brand_url'] = $brand->brand_url; 					# ex. hyperasia
+		$data['brand_photo_url'] = $brand->brand_photo_url; 		# ex. hyperasia1.png
+		$data['brand_name'] = $brand->brand_name; 					# ex. Hyper Asia
 		$data['brand_description'] = $brand->brand_description;
 
 		$data['controller_link'] = site_url('brands/'.$data['brand_url']);
+		$data['current_link'] = $data['controller_link'].'/'.$this->uri->assoc_to_uri($get);
 		
-		// ====== FOR RECENT ITEMS
+		# ====== FOR 5 RECENT ITEMS
 		$data['top_recent_products'] = $this->model_products->getTopRecentProduct($data['brand_id']);
 
+		# ====== SAVE LINK FOR CONTINUE SHOPPING BUTTON
 		$sessdata = array('kueenie_shop_more_page_url'=>"http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 		$this->session->set_userdata($sessdata);
 
-		// FOR SORTING
-		$sort_category_id = $this->uri->segment(3);
-
-		if($sort_category_id=='all' || $sort_category_id==''){
-			$data['all_products'] = $this->model_products->getAllProductsByBrand($data['brand_id'],'');
-		}else{
-			$data['all_products'] = $this->model_products->getAllProductsByBrand($data['brand_id'],$sort_category_id);
-		}
-
+		# ====== FOR SORT BY CATEGORY
+		$data['all_products'] = $this->model_products->getAllProductsByBrand($data['brand_id'],$sort_sub_category_id,$sort_specific_category_id);
+		
 		$this->load->view('view_brands', $data);
 	} # End index
 
