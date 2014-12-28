@@ -206,13 +206,14 @@ class Admin extends CI_Controller {
 			$crud->set_subject('Colors');
 
 			$crud->display_as('color_name', 'Product Color')
-				 ->display_as('color_photo_url', 'Product Photo')
 				 ->display_as('products_prod_id', 'Product Name')
 				 ;
 
-			$crud->set_field_upload('color_photo_url','assets/products');
+			// $crud->set_field_upload('color_photo_url','assets/products');
 			$crud->set_field_upload('color_photo_palette','assets/palette');
 			$crud->set_relation('products_prod_id','products','prod_name');
+			$crud->unset_columns('color_photo_url');
+			$crud->field_type('color_photo_url','hidden');
 
             if ($crud->getState() == 'add' || $crud->getState() == 'insert') {
                 $crud->set_relation_n_n('Sizes', 'items ', 'sizes', 'colors_color_id', 'sizes_size_id', 'size_name');
