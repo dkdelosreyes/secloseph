@@ -145,24 +145,6 @@ class Model_products extends CI_Model {
         return $query->result_array();
 
     }
-    
-
-    public function getLatestProducts(){
-        $query = $this->db->query('
-                        SELECT *
-                        FROM products
-                        ORDER BY prod_date_added DESC, prod_name 
-                        LIMIT 0,28
-                        '
-                    );
-        return $query->result();
-    }
-
-
-
-
-
-
 
 
     //FOR WOMEN AND MEN
@@ -181,16 +163,18 @@ class Model_products extends CI_Model {
                                 AND sub.sub_cat_id = spe.sub_categories_sub_cat_id
                                 AND mai.main_cat_id = sub.main_categories_main_cat_id
                         WHERE mai.main_cat_name = "'.$category.'"
+                        AND p.prod_record_status = "ACTIVE"
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         LIMIT 0,5
                     ');
 
-        return $query->result_array();
+        return $query->result();
     }
 
-    public function getAllProductsByCategory($category,$sort_category_id){
-        $where_sort = $sort_category_id != ''? 'AND p.categories_cat_id = "'.$sort_category_id.'"' : '';
+    public function getAllProductsByCategory($category,$sub_category_id,$specific_category_id){
+        $sub_category_sort = $sub_category_id != '' ? 'AND sub.sub_cat_id = "'.$sub_category_id.'"' : '';
+        $specific_category_sort = $specific_category_id != '' ? 'AND p.categories_cat_id = "'.$specific_category_id.'"' : '';
         $query_string = '
                         SELECT c.color_id, c.color_name, c.color_photo_url, p.prod_name, p.prod_price_ret, 
                                 p.prod_short_description, spe.spec_cat_name
@@ -204,7 +188,9 @@ class Model_products extends CI_Model {
                                 AND sub.sub_cat_id = spe.sub_categories_sub_cat_id
                                 AND mai.main_cat_id = sub.main_categories_main_cat_id
                         WHERE mai.main_cat_name = "'.$category.'"
-                        '.$where_sort.'
+                        '.$specific_category_sort.'
+                        '.$sub_category_sort.'
+                        AND p.prod_record_status = "ACTIVE"
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         ';
@@ -229,16 +215,18 @@ class Model_products extends CI_Model {
                         AND spe.spec_cat_id = p.categories_cat_id
                         AND sub.sub_cat_id = spe.sub_categories_sub_cat_id
                         AND mai.main_cat_id = sub.main_categories_main_cat_id
+                        WHERE p.prod_record_status = "ACTIVE"
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         LIMIT 0,5
                     ');
 
-        return $query->result_array();
+        return $query->result();
     }
 
-    public function getNewArrivals($sort_category_id){
-        $where_sort = $sort_category_id != ''? 'WHERE p.categories_cat_id = "'.$sort_category_id.'"' : '';
+    public function getNewArrivals($sub_category_id,$specific_category_id){
+        $sub_category_sort = $sub_category_id != '' ? 'AND sub.sub_cat_id = "'.$sub_category_id.'"' : '';
+        $specific_category_sort = $specific_category_id != '' ? 'AND p.categories_cat_id = "'.$specific_category_id.'"' : '';
         $query_string = '
                         SELECT *
                         FROM products p 
@@ -250,39 +238,14 @@ class Model_products extends CI_Model {
                         AND spe.spec_cat_id = p.categories_cat_id
                         AND sub.sub_cat_id = spe.sub_categories_sub_cat_id
                         AND mai.main_cat_id = sub.main_categories_main_cat_id
-                        '.$where_sort.'
+                        WHERE p.prod_record_status = "ACTIVE"
+                        '.$specific_category_sort.'
+                        '.$sub_category_sort.'
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         LIMIT 0,20
                     ';
         $query = $this->db->query($query_string);
-
-        return $query->result();
-    }
-
-    public function getLikeProducts($prod_id,$brand_id){
-        $query = $this->db->query('
-                        SELECT c.color_id, c.color_name, c.color_photo_url, p.prod_name, p.prod_price_ret, 
-                                p.prod_short_description, s.spec_cat_name
-                        FROM products p 
-                            JOIN colors c 
-                            JOIN specific_categories s
-                            JOIN sub_categories sub 
-                            JOIN main_categories mai
-                                ON p.prod_id = c.products_prod_id 
-                                AND p.categories_cat_id = s.spec_cat_id
-                                AND sub.sub_cat_id = s.sub_categories_sub_cat_id
-                                AND mai.main_cat_id = sub.main_categories_main_cat_id
-                        WHERE p.prod_id != 17 AND p.brands_brand_id = 6
-                        GROUP BY p.prod_name
-                        ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC,
-                            CASE p.categories_cat_id
-                                WHEN 17 THEN 0
-                                ELSE 2147483647
-                            END
-                        LIMIT 0,5
-                    ');
-
 
         return $query->result();
     }

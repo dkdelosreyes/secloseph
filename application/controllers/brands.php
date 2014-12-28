@@ -33,7 +33,6 @@ class Brands extends CI_Controller {
 		$data['page_title'] = $brand->brand_name;
 		$data['specific_categories'] = $this->model_specific_categories->getSpecificCategories();
 		$data['sub_categories'] = $this->model_sub_categories->getSubCategories($brand_id);
-		$data['latest_products'] = $this->model_products->getLatestProducts();
 
 		$data['brand_id'] = $brand->brand_id; 						# ex. 1
 		$data['brand_url'] = $brand->brand_url; 					# ex. hyperasia
