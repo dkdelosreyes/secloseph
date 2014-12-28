@@ -34,7 +34,7 @@ class Products extends CI_Controller {
 
 		$brand_id = $this->uri->segment(3);
 
-		$data['all_products'] = $this->model_products->getAllProductsByBrand($brand_id);
+		$data['all_products'] = $this->model_products->getAllProductsByBrand($brand_id,'','');
 			
 		$this->load->view('view_all_products', $data);
 	} # End allProducts
@@ -49,7 +49,7 @@ class Products extends CI_Controller {
 		$data['product'] = $this->model_products->getProduct($id);
 		$data['like_products'] = $this->model_products->getLikeProducts($data['product'][0]['prod_id'], $data['product'][0]['brands_brand_id']);
 		
-		$data['you_may_also_like_products'] = $this->model_products->getAllProductsByBrand(2,'');
+		$data['you_may_also_like_products'] = $this->model_products->getAllProductsByBrand(2,'','');
 
 		foreach ($data['product'] as $p) {
 			$data['color'] = $this->model_products->getProductByColor($p['prod_id']);

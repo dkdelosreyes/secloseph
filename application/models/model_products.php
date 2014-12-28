@@ -11,6 +11,7 @@ class Model_products extends CI_Model {
                         ON p.prod_id = c.products_prod_id
                         AND b.brand_id = p.brands_brand_id
                         WHERE p.brands_brand_id = '.$brand_id.'
+                        AND p.prod_record_status = "ACTIVE"
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         LIMIT 0,5'
@@ -31,6 +32,7 @@ class Model_products extends CI_Model {
                         WHERE p.brands_brand_id = '.$brand_id.'
                         '.$specific_category_sort.'
                         '.$sub_category_sort.'
+                        AND p.prod_record_status = "ACTIVE"
                         GROUP BY c.products_prod_id
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         ';
