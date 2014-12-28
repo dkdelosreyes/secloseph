@@ -57,21 +57,13 @@
   <!--UPLOAD PHOTO-->
     
 <?php 
-    //$_SESSION['isUploadVisible'] = isset($_SESSION['isUploadVisible'])? $_SESSION['isUploadVisible'] : '';
     $CI =& get_instance();
-     $project_id = $CI->uri->segment(4);
+     $color_id = $CI->uri->segment(4);
  
     if($CI->session->userdata('isUploadVisible')){
-        if($CI->session->userdata('table') == 'tbl_sys_projects'){
-            echo "Upload Floorplan Photos:".  br(1);
-            echo "<iframe src='".site_url('system_admin/image_floorplan/'.$project_id.'')."' width='100%' height='300px' frameBorder='0'></iframe>";
-            
-            echo "Upload Gallery Photos:".  br(1);
-            echo "<iframe src='".site_url('system_admin/image_gallery/'.$project_id.'')."' width='100%' height='300px' frameBorder='0'></iframe>";
-        
-        }else if($CI->session->userdata('table') == 'tbl_web_unit_finder'){
-            echo "Upload Photos: ".  br(1);
-            echo "<iframe src='".site_url('sale_staff/image_photo/'.$project_id.'')."' width='100%' height='300px' frameBorder='0'></iframe>";
+        if($CI->session->userdata('table') == 'images'){
+            echo nbs(3)."Photos:".  br(1).nbs(3)." <i><small>NOTE: You may reorder the photos. Photo priority will start from left to right. The first one becomes the preview photo. Upload up to 4 images only.</small></i>".  br(1);
+            echo "<iframe src='".site_url('admin/image_product_color/'.$color_id.'')."' width='100%' height='200px' frameBorder='0'></iframe>";
             
         }
    }

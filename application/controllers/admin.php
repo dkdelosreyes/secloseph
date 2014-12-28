@@ -13,6 +13,9 @@ class Admin extends CI_Controller {
 		$this->load->model('model_items');
 		$this->load->model('model_sizes');
 
+		$this->session->set_userdata('isUploadVisible', false);
+		$this->session->set_userdata('table', '');
+
 	} # End construct
 
 	public function index() {
@@ -193,8 +196,11 @@ class Admin extends CI_Controller {
     }
 
 	public function colors(){
-			$crud = new grocery_CRUD();
+			# For image crud upload
+			$this->session->set_userdata('isUploadVisible', true);
+			$this->session->set_userdata('table', 'images');
 
+			$crud = new grocery_CRUD();
 			$crud->set_theme('datatables');
 			$crud->set_table('colors');
 			$crud->set_subject('Colors');
@@ -224,6 +230,25 @@ class Admin extends CI_Controller {
 			$output = $crud->render();
 			$this->tableOutput($output);
 	} # End colors
+
+	function _image_output2($output = null){
+		$this->load->view('admin/view_image_crud.php',$output);	
+	}
+
+	function image_product_color(){
+		$image_crud = new image_CRUD();
+	
+		$image_crud->set_primary_key_field('img_id');
+		$image_crud->set_url_field('img_photo_url');
+		$image_crud->set_table('images')
+		->set_relation_field('colors_color_id')
+		->set_ordering_field('img_priority')
+		->set_image_path('assets/products');
+			
+		$output = $image_crud->render();
+	
+		$this->_image_output2($output);
+	}
 	
 
 	public function items(){

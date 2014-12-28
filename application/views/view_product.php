@@ -61,22 +61,20 @@
 														<input type="hidden" name="itemColor" id="itemColor" value="<? echo $p['color_name']?>">
 														<input type="hidden" id="itemId" name="itemId" value="">
 														<input type="hidden" name="deliveryInfo" id="deliveryInfo" value="<?php echo $p['prod_delivery_info'] ?>">
-
 														
+
 														<!-- ITEM IMAGE
 														=============================================================== -->
 														<div class="col-md-1" style="padding-right:0px">
-															<!-- <a href=""> -->
-			                    								<div style="height:110px;overflow:hidden;margin-bottom:14px">
-			                    									<img src="<?php echo $photo_url?>" style="width:100%" alt="">
-			                    								</div>
-			                    							<!-- </a> -->
-															
-
+			                    							<div style="height:110px;overflow:hidden;margin-bottom:14px">
+			                    								<img src="<?php echo $photo_url?>" id="img-thumb" style="width:100%" alt="">
+			                    							</div>
 														</div>
+
 														<div class="col-md-4" style="text-align: center;">
-																<img src="<?php echo $photo_url?>" class="img-responsive" id="img-zoom" data-large="<?php echo $photo_url?>">
+															<img src="<?php echo $photo_url?>" class="img-responsive" id="img-zoom" data-large="<?php echo $photo_url?>">
 														</div> 
+
 														<!-- ITEM DESCRIPTION
 														=============================================================== -->
 			                    						<div class="col-md-4">
@@ -372,8 +370,6 @@
 
 		<script type="text/javascript">
 
-		$('#img-zoom').imagezoomsl();
-
 		// ADD TO CART========================================================
 	      $('#formAddToCart').submit(function(){
 	        $("#btnAddToCart").button('loading');
@@ -413,8 +409,9 @@
 	      });
 		// END ADD TO CART========================================================
 
-		var stock;
+		
 		// FOR SIZE SELECT LIST====================================================
+		var stock;
 		$("#size-retail").change(function(){
 			$('#msgErrorSize').html("");
         	$(".form-size").removeClass("has-error");
@@ -472,9 +469,15 @@
 		// END QUANTITY INPUT FIELD====================================================
 
 
+		// IMAGE ZOOM THUMB====================================================
+		$('#img-zoom').imagezoomsl();
+		$('#img-thumb').click(function(){
+			$("#img-zoom").attr("src",$(this).attr('src'));
+			$("#img-zoom").attr("data-large",$(this).attr('src'));
+		});
+		// IMAGE ZOOM THUMB====================================================
 
-
-		</script>
+	</script>
 
 
 

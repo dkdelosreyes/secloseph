@@ -615,6 +615,11 @@ body {
     #page-content-wrapper .brands-banner-right .col-md-2{
 		height:55px;}
 }
+
+
+#img-thumb:hover{
+	cursor: pointer;
+}
 	
 
 
