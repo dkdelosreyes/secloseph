@@ -99,17 +99,27 @@
 									<hr>
 									<?
 										if(!empty($top_recent_products)){
+											$counter = 0;
 		                    				foreach($top_recent_products as $p):?>
 
 		                    					<div class="col-md-2 col-xs-2">
-		                    						<a href="<?php echo base_url('products/viewProduct/'.$p['color_id'])?>">
-		                    							<img src="<?php echo base_url('assets/products/'.$p['color_photo_url'])?>" alt="">
+		                    						<a href="<?php echo base_url('products/viewProduct/'.$p->color_id)?>">
+		                    							<?php
+															if(!empty($top_preview_photo[$counter])){
+																foreach ($top_preview_photo[$counter] as $q) :?>
+																	<img src="<?php echo base_url('assets/products/'.$q->img_photo_url)?>" alt="" >
+																<?endforeach;
+																$counter++;
+															}else{?>
+																<img src="<?php echo base_url('assets/img/product_default.png')?>" alt="" >
+															<?}
+														?>
 		                    						</a>
 		                    					</div>
 
 			                   				<?endforeach; 
 		                    			}else{
-		                   					echo "<li>No Products Yet</ul>";
+		                   					echo "<div>No Products Yet</div>";
 		                   				}
 		                   			?>
 								</div>
@@ -159,12 +169,22 @@
 
 							<?php 
 							if(!empty($all_products)){
-								foreach ($all_products as $a) :?>
+								$counter = 0;
+								foreach ($all_products as $a) : ?>
 							
 									<div class="col-md-4 brand-products">
 										<a href="<?php echo site_url('products/viewProduct/'.$a->color_id)?>">
 										<div class="product-img" style="height:371px;overflow:hidden">
-											<img src="<?php echo base_url('assets/products/'.$a->color_photo_url)?>" alt="" class="img-responsive">
+											<?php
+												if(!empty($preview_photo[$counter])){
+													foreach ($preview_photo[$counter] as $p) :?>
+														<img src="<?php echo base_url('assets/products/'.$p->img_photo_url)?>" alt="" class="img-responsive">
+													<?endforeach;
+													$counter++;
+												}else{?>
+													<img src="<?php echo base_url('assets/img/product_default.png')?>" alt="" class="img-responsive">
+												<?}
+											?>
 										</div>
 										<div class="product-details">
 											<span class="product-name"><?php echo $a->prod_name?></span>

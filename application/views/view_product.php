@@ -48,63 +48,92 @@
 												$stockStatus = "";
 
 												if(!empty($product)){
-		                    						foreach($product as $p):
-
-			                    						$photo_url = base_url('assets/products/'.$p['color_photo_url']);
-			                    						$color_photo_palette = site_url('assets/palette/'.$p['color_photo_palette']);
-			                    						$retail_rate = $p['prod_price_ret'];
+		                    						foreach($product as $p){
+			                    						$color_photo_palette = $p['color_photo_palette'] != '' ? site_url('assets/palette/'.$p['color_photo_palette']) : '';
+			                    						$color_name = $p['color_name'];
 			                    						$brand_sell_type = $p['brand_sell_type'];
-			                    						?>
+			                    						$prod_name = $p['prod_name'];
+			                    						$retail_rate = $p['prod_price_ret'];
+			                    						$prod_price_ret = $p['prod_price_ret'];
+			                    						$prod_delivery_info = $p['prod_delivery_info'];
+			                    						$prod_short_description = $p['prod_short_description'];
+			                    						$prod_description = $p['prod_description'];
+			                    						$prod_delivery_amount_free = $p['prod_delivery_amount_free'];
+			                    						$prod_days_return_free = $p['prod_days_return_free'];
+			                    						$prod_cod_allowed = $p['prod_cod_allowed'];
 
-			                    						<input type="hidden" name="itemPrice" id="itemPrice" value="<? echo $p['prod_price_ret']?>">
-														<input type="hidden" name="itemName" id="itemName" value="<? echo $p['prod_name']?>">
-														<input type="hidden" name="itemColor" id="itemColor" value="<? echo $p['color_name']?>">
+		                    						}
+		                    					}	
+		                    					$preview_photo = '';
+		                    					if(!empty($images)){
+				                    				foreach($images as $p){
+				                    					$preview_photo = base_url('assets/products/'.$p->img_photo_url);
+				                    					break;
+				                    				}
+				                    			}else{
+				                    				$preview_photo = base_url('assets/img/product_default.png');	
+				                    			}
+			                    			?>
+
+			                    						<input type="hidden" name="itemPrice" id="itemPrice" value="<? echo $prod_price_ret?>">
+														<input type="hidden" name="itemName" id="itemName" value="<? echo $prod_name?>">
+														<input type="hidden" name="itemColor" id="itemColor" value="<? echo $color_name?>">
 														<input type="hidden" id="itemId" name="itemId" value="">
-														<input type="hidden" name="deliveryInfo" id="deliveryInfo" value="<?php echo $p['prod_delivery_info'] ?>">
+														<input type="hidden" name="deliveryInfo" id="deliveryInfo" value="<?php echo $prod_delivery_info ?>">
 														
 
 														<!-- ITEM IMAGE
 														=============================================================== -->
 														<div class="col-md-1" style="padding-right:0px">
-			                    							<div style="height:110px;overflow:hidden;margin-bottom:14px">
-			                    								<img src="<?php echo $photo_url?>" id="img-thumb" style="width:100%" alt="">
-			                    							</div>
+			                    							<?
+			                    								if(!empty($images)){
+				                    								foreach($images as $p):?>
+				                    									<div class="img-thumb-wrapper">
+						                    								<img src="<?php echo base_url('assets/products/'.$p->img_photo_url)?>" class="img-thumb" alt="">
+						                    							</div>
+				                    								<? endforeach;
+				                    							}else{?>
+				                    								<div class="img-thumb-wrapper">
+						                    							<img src="<?php echo base_url('assets/img/product_default.png')?>" class="img-thumb" alt="">
+						                    						</div>
+				                    							<?}
+				                    						?>
 														</div>
 
 														<div class="col-md-4" style="text-align: center;">
-															<img src="<?php echo $photo_url?>" class="img-responsive" id="img-zoom" data-large="<?php echo $photo_url?>">
+															<img src="<?php echo $preview_photo?>" class="img-responsive" id="img-zoom" data-large="<?php echo $preview_photo?>">
 														</div> 
 
 														<!-- ITEM DESCRIPTION
 														=============================================================== -->
 			                    						<div class="col-md-4">
-			                    							<span class="prod-name"><?php echo $p['prod_name'].br(); ?></span>
-			                    							PHP <?php echo number_format($p['prod_price_ret'], 2) ?>
+			                    							<span class="prod-name"><?php echo $prod_name.br(); ?></span>
+			                    							PHP <?php echo number_format($prod_price_ret, 2) ?>
 
 			                    							<hr>
 
 			                    							<p class="description">
 			                    								<?php
-																	echo $p['prod_short_description'].br(2);	
-					                    							echo $p['prod_description'].br();
+																	echo $prod_short_description.br(2);	
+					                    							echo $prod_description.br();
 			                    								 ?>
 			                    							</p>
 
 			                    							<div class="delivery-info">
 				                    							<span class="label">Delivery Info:</span><br><br>
-				                    							<span class="description"><?php echo $p['prod_delivery_info'] ?></span><br><br>
+				                    							<span class="description"><?php echo $prod_delivery_info ?></span><br><br>
 
 				                    							<div class="row">
-					                    							<div class="col-md-10">Delivery above P<?echo $p['prod_delivery_amount_free']?></div>
+					                    							<div class="col-md-10">Delivery above P<?echo $prod_delivery_amount_free?></div>
 																	<div class="col-md-2">Free</div>
 																</div>
 																<div class="row">
-					                    							<div class="col-md-10"><?echo $p['prod_days_return_free']?> Days Return</div>
+					                    							<div class="col-md-10"><?echo $prod_days_return_free?> Days Return</div>
 																	<div class="col-md-2">Free</div>
 																</div>
 																<div class="row">
 					                    							<div class="col-md-10">Cash On Delivery</div>
-																	<div class="col-md-2"><?echo $p['prod_cod_allowed']?></div>
+																	<div class="col-md-2"><?echo $prod_cod_allowed?></div>
 																</div>
 			                    							</div>
 															
@@ -112,10 +141,10 @@
 			                    							<span class="label">Color:</span><br><br>
 			                    							<div class="color-box">
 																<div class="color-box" style="margin:3px 3px 0px 0px;height:40x;width:50px;overflow:hidden">
-																	<?if($p['color_photo_palette']==''){?>
-																		<img src="<?php echo $photo_url?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:100%;">
+																	<?if($color_photo_palette==''){?>
+																		<img src="<?php echo $preview_photo?>" alt="<?php echo $color_name?>" title="<?php echo $color_name?>" style="width:100%;">
 																	<?}else{?>
-																		<img src="<? echo $color_photo_palette?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:100%;">
+																		<img src="<? echo $color_photo_palette?>" alt="<?php echo $color_name?>" title="<?php echo $color_name?>" style="width:100%;">
 																	<?}?>
 																</div>
 																<div class="clearfix"></div>
@@ -123,8 +152,8 @@
 
 			                    						</div>
 
-		                    						<?php endforeach; 
-		                    					}?>
+		                    						<?php //endforeach; 
+		                    					//}?>
 
 
 													<!-- ITEM COLORS
@@ -150,7 +179,7 @@
 															<a href="<?php echo base_url('products/viewProduct/'.$p['color_id'])?>" style="float: left;">
 																<div class="color-box" style="margin:3px 3px 0px 0px;height:40x;width:50px;overflow:hidden">
 																	<?if($p['color_photo_palette']==''){?>
-																		<img src="<?php echo $photo_url?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:100%;">
+																		<img src="<?php echo $preview_photo?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:100%;">
 																	<?}else{?>
 																		<img src="<? echo site_url('assets/palette/'.$p['color_photo_palette'])?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>"  style="width:100%;">
 																	<?}?>
@@ -327,17 +356,6 @@
 									
 							</div>
 
-							<div class="row">
-		                    	<?php
-		                    		if(!empty($like_products)){
-		                    			foreach ($like_products as $p) {
-		                    				// print_r("<pre>".$like_products."</pre>");
-		                   				}
-		                   			}
-		                   		?>
-		                   	</div>
-
-
 						</div>
 					</div>
 				</div>
@@ -469,13 +487,18 @@
 		// END QUANTITY INPUT FIELD====================================================
 
 
-		// IMAGE ZOOM THUMB====================================================
+		// IMAGE ZOOM ====================================================
 		$('#img-zoom').imagezoomsl();
-		$('#img-thumb').click(function(){
-			$("#img-zoom").attr("src",$(this).attr('src'));
-			$("#img-zoom").attr("data-large",$(this).attr('src'));
+		$('.img-thumb').mouseenter(function(){
+			var image_source = $(this).attr('src');
+			$("#img-zoom").fadeOut("fast",function(){
+				$("#img-zoom").attr("src",image_source);
+				$("#img-zoom").attr("data-large",image_source);	
+				$("#img-zoom").fadeIn()	
+			})
+			
 		});
-		// IMAGE ZOOM THUMB====================================================
+		// IMAGE ZOOM ====================================================
 
 	</script>
 

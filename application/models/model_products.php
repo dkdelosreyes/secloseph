@@ -16,7 +16,7 @@ class Model_products extends CI_Model {
                         ORDER BY p.prod_date_added DESC, p.prod_date_updated DESC
                         LIMIT 0,5'
                     );
-        return $query->result_array();
+        return $query->result();
     }
 
     public function getAllProductsByBrand($brand_id,$sub_category_id,$specific_category_id){

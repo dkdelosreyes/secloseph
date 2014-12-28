@@ -17,6 +17,7 @@ class Products extends CI_Controller {
 		$this->load->model('model_specific_categories');
 		$this->load->model('model_banks');
 		$this->load->model('model_confirm_payments');
+		$this->load->model('model_images');
 		
 	} # End construct
 
@@ -47,9 +48,8 @@ class Products extends CI_Controller {
 		$brand = $this->model_products->getBrandOfProduct($id);
 
 		$data['product'] = $this->model_products->getProduct($id);
-		$data['like_products'] = $this->model_products->getLikeProducts($data['product'][0]['prod_id'], $data['product'][0]['brands_brand_id']);
-		
-		$data['you_may_also_like_products'] = $this->model_products->getAllProductsByBrand(2,'','');
+		$data['images'] = $this->model_images->getProductColorImages($id);
+		$data['you_may_also_like_products'] = $this->model_products->getAllProductsByBrand($data['product'][0]['brands_brand_id'],'','');
 
 		foreach ($data['product'] as $p) {
 			$data['color'] = $this->model_products->getProductByColor($p['prod_id']);

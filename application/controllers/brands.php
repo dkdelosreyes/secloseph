@@ -11,6 +11,7 @@ class Brands extends CI_Controller {
 		$this->load->model("model_brands");
 		$this->load->model('model_specific_categories');
 		$this->load->model('model_sub_categories');
+		$this->load->model('model_images');
 		
 		$brands = $this->db->get('brands')->result();
 	} # End construct
@@ -45,6 +46,13 @@ class Brands extends CI_Controller {
 		
 		# ====== FOR 5 RECENT ITEMS
 		$data['top_recent_products'] = $this->model_products->getTopRecentProduct($data['brand_id']);
+		if(!empty($data['top_recent_products'])){
+            $a = 0;
+            foreach ($data['top_recent_products'] as $v) {
+                $top_preview_photo[$a++] = $this->model_images->getProductColorPreviewPhoto($v->color_id);
+            }
+            $data['top_preview_photo'] = $top_preview_photo;
+        }
 
 		# ====== SAVE LINK FOR CONTINUE SHOPPING BUTTON
 		$sessdata = array('kueenie_shop_more_page_url'=>"http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
@@ -52,6 +60,13 @@ class Brands extends CI_Controller {
 
 		# ====== FOR SORT BY CATEGORY
 		$data['all_products'] = $this->model_products->getAllProductsByBrand($data['brand_id'],$sort_sub_category_id,$sort_specific_category_id);
+		if(!empty($data['all_products'])){
+            $a = 0;
+            foreach ($data['all_products'] as $v) {
+                $preview_photo[$a++] = $this->model_images->getProductColorPreviewPhoto($v->color_id);
+            }
+            $data['preview_photo'] = $preview_photo;
+        }
 		
 		$this->load->view('view_brands', $data);
 	} # End index

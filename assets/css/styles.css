@@ -617,7 +617,15 @@ body {
 }
 
 
-#img-thumb:hover{
+.img-thumb-wrapper{
+	height:110px;
+	overflow:hidden;
+	margin-bottom:14px
+}
+.img-thumb{
+	width:100%;
+}
+.img-thumb:hover{
 	cursor: pointer;
 }
 	
