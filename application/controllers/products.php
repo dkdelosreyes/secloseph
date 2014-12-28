@@ -50,7 +50,17 @@ class Products extends CI_Controller {
 		$data['product'] = $this->model_products->getProduct($id);
 		$data['images'] = $this->model_images->getProductColorImages($id);
 		$data['you_may_also_like_products'] = $this->model_products->getAllProductsByBrand($data['product'][0]['brands_brand_id'],'','');
+		
+		# YOU MAY ALSO LIKE - PREVIEW PHOTO
+		if(!empty($data['you_may_also_like_products'])){
+            $a = 0;
+            foreach ($data['you_may_also_like_products'] as $v) {
+                $like_preview_photo[$a++] = $this->model_images->getProductColorPreviewPhoto($v->color_id);
+            }
+            $data['like_preview_photo'] = $like_preview_photo;
+        }
 
+        # PRODUCT COLOR
 		foreach ($data['product'] as $p) {
 			$data['color'] = $this->model_products->getProductByColor($p['prod_id']);
 			$product_name  = $p['prod_name'];

@@ -274,7 +274,7 @@
 
 										  <?php
 											if(!empty($you_may_also_like_products)){
-												$firstLoop = true; $counter = 0; $total = 0;$remainder=0;
+												$firstLoop = true; $counter = 0; $total = 0;$remainder=0; $ctr=0;
 
 												foreach($you_may_also_like_products as $p){
 													$total++;
@@ -296,7 +296,17 @@
 															<div class="col-xs-3">
 											                    <div class="thumbnail" style="height:450px;">
 															    	<div style="width:100%; height:300px;overflow:hidden;text-align: center;">
-															    		<img src="<?php echo base_url('assets/products/'.$p->color_photo_url)?>" alt="" style="vertical-align: middle;margin:0px;width:100%;height:auto">
+															    		<?php
+																			if(!empty($like_preview_photo[$ctr])){
+																				foreach ($like_preview_photo[$ctr] as $q) :?>
+																					<img src="<?php echo base_url('assets/products/'.$q->img_photo_url)?>" alt="" style="vertical-align: middle;margin:0px;width:100%;height:auto">
+																				<?endforeach;
+																				$ctr++;
+																			}else{?>
+																				<img src="<?php echo base_url('assets/img/product_default.png')?>" alt="" style="vertical-align: middle;margin:0px;width:100%;height:auto" >
+																			<?}
+																		?>
+															    		
 															      	</div>
 
 																    <div class="caption" style="height:150px;overflow:hidden;">
