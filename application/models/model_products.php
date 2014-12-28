@@ -146,6 +146,18 @@ class Model_products extends CI_Model {
 
     }
 
+    public function getLatestProducts(){
+        $query = $this->db->query('
+                        SELECT *
+                        FROM products
+                        ORDER BY prod_date_added DESC, prod_name 
+                        LIMIT 0,28
+                        '
+                    );
+        return $query->result();
+    }
+
+
 
     //FOR WOMEN AND MEN
 

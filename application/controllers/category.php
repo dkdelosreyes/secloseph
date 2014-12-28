@@ -26,6 +26,7 @@ class Category extends CI_Controller {
 
 		# Declare data
 		$data['specific_categories'] = $this->model_specific_categories->getSpecificCategories();
+		$data['latest_products'] = $this->model_products->getLatestProducts();
 
 		$data['brand_url'] = 'secretcloset2';
 		$data['brand_photo_url'] = 'banner2.png';
