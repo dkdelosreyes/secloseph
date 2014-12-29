@@ -110,15 +110,43 @@ class Orderadmin extends CI_Controller {
 			}
 		}
 
+		$data['orders_details'] = $this->model_order_details->getAllOrderDetails($order_id);
+		$data['orders'] = $this->model_orders->getOrderAddressAndTotal($order_id);
+		$data['customer_info'] = $this->model_customers->getUserInfoByOrderId($order_id);
+		$data['confirmed_payments'] = $this->model_confirm_payments->getConfirmedPaymentsByOrderId($order_id);
+		$data['order_id'] = $order_id;
+
 		$data['status'] = $status;
 		$data['err'] = 1;
 
 		echo json_encode($data);
+
+		// $theHTMLResponse    = $this->load->view('orderadmin/view_orderadmin_each_order_form.php', $data, true);
+		// // echo $theHTMLResponse;
+		// $this->output->set_content_type('application/json');
+  //   	$this->output->set_output(json_encode(
+  //   		array(
+  //   			'ShoppingCartHtml'=> $theHTMLResponse,
+  //   			'status' =>  $status,
+  //   			'err' => 1
+  //   			)
+  //   		)
+  //   	);
+
     } # End approve_order
 
     public function reject_order(){
 		$order_id = $this->input->post("orderId");
 		$status = "Order Closed";
+		$this->model_orders->updateOrderStatus($order_id,$status);
+
+		$data['status'] = $status;
+		echo json_encode($data);
+    } # End reject_order
+
+    public function delivered_order(){
+		$order_id = $this->input->post("orderId");
+		$status = "Order Delivered";
 		$this->model_orders->updateOrderStatus($order_id,$status);
 
 		$data['status'] = $status;

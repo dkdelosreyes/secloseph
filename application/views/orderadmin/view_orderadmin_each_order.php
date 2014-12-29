@@ -123,8 +123,12 @@
                             }
                             ?>
 
+                            <div id="orderForm">
+                                <?php include 'view_orderadmin_each_order_form.php'; ?>
+                            </div>
 
-                            <form id="formOrderDetails" action="<?php echo base_url('orderadmin/approve_order')?>" method="post">
+
+                            <!-- <form id="formOrderDetails" action="<?php echo base_url('orderadmin/approve_order')?>" method="post">
                             
                             <input type="hidden" id="orderId" name="orderId" value="<?php echo $order_id?>">
                             
@@ -139,7 +143,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?
+                                <?php
                                     $count = 0;
                                     if(!empty($orders_details)){
                                         foreach($orders_details as $p):?>
@@ -166,24 +170,26 @@
 
                             
                             
-                            <?
+                            <?php
                                 if(!empty($orders)){
                                     foreach($orders as $p):?>
                                         Total: <?echo $p->order_total.br(3)?>
                                     <? endforeach;
                                 }
+
+                                $approve_btn_state = $p->order_status == 'Order Approved' || $p->order_status == 'Order Closed' || $p->order_status == 'Order Delivered' ? 'disabled' : '';
+                                $reject_btn_state = $p->order_status == 'Order Approved' || $p->order_status == 'Order Closed' || $p->order_status == 'Order Delivered' ? 'disabled' : '';
+                                $delivered_btn_state = $p->order_status == 'Order Closed' || $p->order_status == 'Order Delivered' ? 'disabled' : '';
+
                             ?>
 
-
-                            <input type="submit" class="btn btn-danger btn-lg" id="btnApproveOrder" data-loading-text="Processing..." value="Approve">
-                            <input type="reset" class="btn btn-danger btn-lg" id="btnRejectOrder" data-loading-text="Processing..." value="Reject">
                             
-                            </form> 
-
-                            <!-- <button class="btn btn-danger btn-lg" id="btnRejectOrder" data-loading-text="Processing..."> Reject </button> -->
+                            <input type="submit" class="btn btn-danger btn-lg" id="btnApproveOrder" data-loading-text="Processing..." value="Approve" style="width:120px" <?php echo $approve_btn_state?>>
+                            <input type="reset" class="btn btn-danger btn-lg" id="btnRejectOrder" data-loading-text="Processing..." value="Reject" style="width:120px" <?php echo $reject_btn_state?>>
+                            <input type="button" class="btn btn-danger btn-lg" id="btnDeliveredOrder" data-loading-text="Processing..." value="Delivered" style="width:120px" <?php echo $delivered_btn_state?>>
                             
+                            </form>  -->
 
-                            
                              
 
                                               
@@ -209,7 +215,6 @@
         var base_url = "<?php echo base_url()?>";
 
         $('#formOrderDetails').submit(function(){
-
         $.post($('#formOrderDetails').attr('action'), $('#formOrderDetails').serialize(), function( data ) {
             if(data.err == 0){
                  console.log("failed");
@@ -217,16 +222,35 @@
                 
             if(data.err == 1){
                 $("#orderStatus").text(data.status);
+                location.reload(); // temporary
             }
-
-              
         }, 'json');
+
+        // $.getJSON($('#formOrderDetails').attr('action'), {
+        //         $('#formOrderDetails').serialize()
+        //     }, function (response) { 
+        //      if(response.success){
+        //         var html = response.ShoppingCartHtml; 
+        //         orderForm.update(html);
+        //         orderForm.close();
+        //       }
+        // });
+
         return false;     
       });
 
         $("#btnRejectOrder").click(function(){
             $.post( base_url+"orderadmin/reject_order", {orderId: $("#orderId").val()}, function(data){
+                console.log(data);
                 $("#orderStatus").text(data.status);
+                location.reload(); // temporary
+            },'json');
+        });
+
+        $("#btnDeliveredOrder").click(function(){
+            $.post( base_url+"orderadmin/delivered_order", {orderId: $("#orderId").val()}, function(data){
+                $("#orderStatus").text(data.status);
+                location.reload(); // temporary
             },'json');
         });
     });

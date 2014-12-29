@@ -39,10 +39,6 @@
                         <div class='col-md-3' style='background-color: #fcf8e3; height: 20px'></div>
                         <div class='col-md-9'> Approved Orders</div>
                     </div>
-                    <!-- <div class="col-md-3">
-                        <div class='col-md-3' style='background-color: whitesmoke; height: 20px;'></div>
-                        <div class='col-md-9'> Approved Orders</div>
-                    </div> -->
                     <div class="col-md-3">
                         <div class='col-md-3' style='background-color: #dff0d8; height: 20px'></div>
                         <div class='col-md-9'> Waiting Confirmation</div>
@@ -51,6 +47,11 @@
                         <div class='col-md-3' style='background-color: #f2dede; height: 20px'></div>
                         <div class='col-md-9'> Closed Orders</div>
                     </div>
+                    <div class="col-md-3">
+                        <div class='col-md-3' style='background-color: whitesmoke; height: 20px;'></div>
+                        <div class='col-md-9'> Delivered Orders</div>
+                    </div>
+                    
                 </div>
 
                 <hr>
@@ -63,6 +64,7 @@
                         <option value="0">Approved Orders</option>    
                         <option value="1">Waiting Confirmation</option>
                         <option value="2">Closed Orders</option>
+                        <option value="2">Delivered Orders</option>
                     </select>
                     </div>
 
@@ -73,6 +75,7 @@
                         <option value="0">Approved Orders</option>    
                         <option value="1">Waiting Confirmation</option>
                         <option value="2">Closed Orders</option>
+                        <option value="2">Delivered Orders</option>
                     </select>
                     </div>
                 </div>
@@ -105,6 +108,9 @@
                                         }else if($p->order_status == 'Order Closed'){
                                             $bgcolor = '#f2dede';
                                             $color = '#b94a48';
+                                        }else if($p->order_status == 'Order Delivered'){
+                                            $bgcolor = 'whitesmoke';
+                                            $color = 'gray';
                                         }?>
 
                                         <tr style="background-color:<?echo $bgcolor?> ; color:<?echo $color?>">
@@ -138,14 +144,7 @@
                                 <?
                                 }
                             ?>
-                                            
-                            
-                                      
-                           <!--  <tr>
-                            	<td colspan=7>
-                                	<center><font style="color:red">There are no orders available</font></center>
-                                </td>
-                            </tr> -->
+                                          
                         </table>
                     </div>
                 </div>
