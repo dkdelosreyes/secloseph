@@ -94,7 +94,11 @@ class Products extends CI_Controller {
 				$deliveryInfo = $this->input->post('deliveryInfo');
 
 				$product = $this->model_products->getProductById($itemId);
-
+				$temp_preview_photo = $this->model_images->getProductColorPreviewPhotoByItemId($itemId);
+				$preview_photo = '';
+				foreach ($temp_preview_photo as $p) {
+						$preview_photo = $p->img_photo_url;
+				}
 				//get the discount percentage
 				
 				$newItemPrice = 0;
@@ -119,7 +123,7 @@ class Products extends CI_Controller {
 					'qty'              => $quantity,
 					'price'            => $itemPrice,
 					'name'             => $itemName,
-					'image'            => $product->color_photo_url,
+					'image'            => $preview_photo,
 					'brand_name'       => $product->brand_name,
 					'discount_price'   => $newItemPrice,
 					'discount_percent' => $discountPercentage,
@@ -624,9 +628,9 @@ class Products extends CI_Controller {
 					$this->paypal->add( $items['name'], $item_price, $items['qty']);
 				}
 
-				// $this->cart->destroy();
-				// $this->session->unset_userdata('checkout_user_type');
-				// $this->session->set_userdata('new_total', '0.00');
+				$this->cart->destroy();
+				$this->session->unset_userdata('checkout_user_type');
+				$this->session->set_userdata('new_total', '0.00');
 
 				$vars =  http_build_query($this->paypal->config);
 

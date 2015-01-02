@@ -97,9 +97,11 @@
 													<td style="width: 40%;">
 													
 														<div style="float: left;">
-															<?php echo form_hidden('[rowid]', $items['rowid']); ?>
+															<?php echo form_hidden('[rowid]', $items['rowid']); 
+																$preview_photo_link  = $items['image'] != '' ? base_url('assets/products/'.$items['image']) : base_url('assets/img/product_default.png');
+															?>
 														
-														<img src="<?php echo base_url('assets/products').'/'.$items['image']?>" class="img-responsive" style="vertical-align: middle; width: 30px;">
+														<img src="<?php echo $preview_photo_link?>" class="img-responsive" style="vertical-align: middle; width: 30px;">
 													<br>
 													
 														</div>

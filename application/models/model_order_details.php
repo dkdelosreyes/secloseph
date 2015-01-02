@@ -31,7 +31,8 @@ class Model_order_details extends CI_Model {
     public function getAllOrderDetails($order_id){
         $query = $this->db->query('
                         SELECT  od.or_det_id,od.or_det_quantity, od.or_det_size, od.or_det_price, i.item_stock,
-                                c.color_photo_url,p.prod_name
+                                (SELECT img_photo_url FROM images WHERE colors_color_id = c.color_id LIMIT 0,1) AS color_photo_url
+                                ,p.prod_name
                         FROM order_details od 
                         JOIN orders o
                         JOIN items i

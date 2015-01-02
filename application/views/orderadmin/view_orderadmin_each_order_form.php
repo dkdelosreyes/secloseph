@@ -16,11 +16,13 @@
         <?php
             $count = 0;
             if(!empty($orders_details)){
-                foreach($orders_details as $p):?>
+                foreach($orders_details as $p):
+                    $preview_photo_link  = $p->color_photo_url != '' ? base_url('assets/products/'.$p->color_photo_url) : base_url('assets/img/product_default.png');?>
+                    
                     <input type="hidden" name="product[<?php echo $count?>]" id="product[<?php echo $count++?>]" value="<?echo $p->or_det_id?>">
                                             
                     <tr>
-                        <td><img src="<?php echo base_url('assets/products').'/'.$p->color_photo_url?>" style="width:100px"></td>
+                        <td><img src="<?php echo $preview_photo_link ?>" style="width:100px"></td>
                         <td>
                             Name: <?echo $p->prod_name.br(1)?>
                             Quantity: <?echo $p->or_det_quantity.br(1)?>

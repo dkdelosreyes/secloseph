@@ -112,9 +112,11 @@
 													<td>
 													
 														<div style="float: left;">
-															<?php echo form_hidden('[rowid]', $items['rowid']); ?>
+															<?php echo form_hidden('[rowid]', $items['rowid']); 
+																$preview_photo_link  = $items['image'] != '' ? base_url('assets/products/'.$items['image']) : base_url('assets/img/product_default.png');
+															?>
 														
-														<img src="<?php echo base_url('assets/products').'/'.$items['image']?>" class="img-responsive" style="vertical-align: middle;">
+														<img src="<?php echo $preview_photo_link?>" class="img-responsive" style="vertical-align: middle;">
 													<br>
 													<a id="remove-item" style="text-decoration: underline; color: #474843; cursor:pointer;">Remove</a>
 														</div>
