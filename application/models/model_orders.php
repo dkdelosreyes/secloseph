@@ -60,7 +60,7 @@ class Model_orders extends CI_Model {
                         FROM orders o JOIN payment_method p 
                         ON o.order_payment_method = p.payment_name
                         WHERE o.customers_cust_id = '.$customer_id.'
-                        AND o.order_id = '.$order_id.'
+                        AND o.order_id = "'.$order_id.'"
                         LIMIT 0,1
                         '
                     );

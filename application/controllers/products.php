@@ -311,7 +311,7 @@ class Products extends CI_Controller {
 		$billingAddress = '';
 		$shippingAddress = '';
 
-		$total = $this->cart->total();
+		$total = $this->session->userdata('new_total');//$this->cart->total();
 		$status = 'Pending Approval';
 		$paymentMethod = $this->input->post('paymentMethod');
 
@@ -585,8 +585,9 @@ class Products extends CI_Controller {
 
 			//..loop through cart and insert to order_details
 			foreach ($this->cart->contents() as $items):
+				$item_price = $items['discount_price'] > 0 ? $items['discount_price'] : $items['price'];
 				$this->model_order_details->insertOrderItem(
-					$items['qty'], $items['price'], 
+					$items['qty'], $item_price, 
 					$items['options']['Size'], $items['options']['Color'],
 					$order_id, $items['id']);
 				
@@ -619,12 +620,13 @@ class Products extends CI_Controller {
 				$this->load->library('paypal',$config);
 
 				foreach ($this->cart->contents() as $items){
-					$this->paypal->add( $items['name'], $items['price'], $items['qty']);
+					$item_price = $items['discount_price'] > 0 ? $items['discount_price'] : $items['price'];
+					$this->paypal->add( $items['name'], $item_price, $items['qty']);
 				}
 
-				$this->cart->destroy();
-				$this->session->unset_userdata('checkout_user_type');
-				$this->session->set_userdata('new_total', '0.00');
+				// $this->cart->destroy();
+				// $this->session->unset_userdata('checkout_user_type');
+				// $this->session->set_userdata('new_total', '0.00');
 
 				$vars =  http_build_query($this->paypal->config);
 
@@ -855,11 +857,12 @@ class Products extends CI_Controller {
 		$order_id = $this->input->post('invoice');
 
 		if($this->session->userdata('kueenie_cust_id')){
-			$data['customer_name'] =  $this->session->userdata('kueenie_cust_fname').' '.$this->session->userdata('kueenie_cust_lname');
+			$data['customer_name'] =  $this->input->post('address_name');
 			$data['orders'] = $this->model_orders->getOrderDetailsForMessagePage($this->session->userdata('kueenie_cust_id'),$order_id);
+		
 		}
 
-		if($this->input->post('payment_status') == 'Completed'){
+		if($this->input->post('payment_status') != 'Failed'){
 			$this->model_orders->updateOrderAddress(
 						$this->input->post('invoice'),
 						$this->input->post('address_name'), $this->input->post('payer_email'), 
