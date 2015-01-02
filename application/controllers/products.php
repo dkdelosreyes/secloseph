@@ -23,7 +23,6 @@ class Products extends CI_Controller {
 
 	public function index() {
 
-
 	} # End index
 
 	public function allProducts() {
@@ -297,6 +296,7 @@ class Products extends CI_Controller {
 
 	} # End checkout_new_customer
 
+	
 	public function order() {
 
 		$customer_id = $this->session->userdata('kueenie_cust_id');
@@ -315,6 +315,11 @@ class Products extends CI_Controller {
 		$status = 'Pending Approval';
 		$paymentMethod = $this->input->post('paymentMethod');
 
+		$addr_fname = ''; $addr_lname = ''; $addr_contact = ''; $addr_num = ''; $addr_prov = ''; $addr_mun = ''; $addr_brgy = ''; $addr_landmark = ''; $addr_instruc = '';
+		$addr_fname_ship = ''; $addr_lname_ship = ''; $addr_contact_ship = ''; $addr_num_ship = ''; $addr_prov_ship = ''; $addr_mun_ship = ''; $addr_brgy_ship = ''; $addr_landmark_ship = ''; $addr_instruc_ship = '';
+
+		# ===== APPLYING FORM VALIDATION
+	if($paymentMethod != 'paypal'){
 		if($customer_id){ /** IF A USER IS LOGGED IN*/
 			/**TO CHECK FOR RADIO BUTTON ADDRESS OR FIELD ADDRESS TO BE USED*/
 			if($billingAddressState == 'hidden'){ /**GO FOR SELECTED RADIO ADDRESS*/
@@ -353,7 +358,7 @@ class Products extends CI_Controller {
 				    //insert to shippings  table
 				}
 			}else{
-				$billingAddress = $this->input->post('billingAddress');/**SAME AS BILLING ADDRESS WILL BE USED*/
+				$shippingAddress = $this->input->post('billingAddress');/**SAME AS BILLING ADDRESS WILL BE USED*/
 				//fetch address credentials same as bill
 				//insert to shippings table
 			}
@@ -398,8 +403,7 @@ class Products extends CI_Controller {
 		}	
 
 
-		//FINAL JUDGEMENT FOR VALDATIONS
-		//====================================================================
+		# ===== FINAL JUDGEMENT FOR VALDATIONS
 		if ($this->form_validation->run() == FALSE){
 			$data['stat'] = 0;
 			if($registerState == 'visible'){
@@ -561,7 +565,10 @@ class Products extends CI_Controller {
 				}
 
 			}
+		}
+	}
 
+			# ===================== SAVING AREA
 			date_default_timezone_set('Asia/Manila');
 			$date_checkout = date('Y-m-d H:i:s');
 			$startDate = time();
@@ -578,28 +585,56 @@ class Products extends CI_Controller {
 
 			//..loop through cart and insert to order_details
 			foreach ($this->cart->contents() as $items):
-				// $product_id = $this->model_products->getProductById2($items['id']);
-				// foreach ($product_id as $p) {
-					$this->model_order_details->insertOrderItem(
+				$this->model_order_details->insertOrderItem(
 					$items['qty'], $items['price'], 
 					$items['options']['Size'], $items['options']['Color'],
 					$order_id, $items['id']);
-				// }
 				
 			endforeach;
+			
 
-			$this->cart->destroy();
-			$this->session->unset_userdata('checkout_user_type');
-			$this->session->set_userdata('new_total', '0.00');
+			if($paymentMethod != 'paypal'){
+				$this->cart->destroy();
+				$this->session->unset_userdata('checkout_user_type');
+				$this->session->set_userdata('new_total', '0.00');
 
-			// echo "<script>console.log(".$recent_order_id.")</script>";
+				// $ret = $this->sendToEmail($email,$fname,$lname, $gender,$pass);
+				// if($ret == true)
+							echo json_encode(array('stat' => 1,'msg' => 'Registered Successfully', 'order_id' => $order_id));
+				// else
+				// 	echo json_encode(array('stat'=>2, 'msg' => 'Failed to Register', 'errorMail' => $ret));
+			
+			}else{
+				$config['business']             = 'diannekatherinedelosreyes-facilitator@gmail.com'; //Your PayPal account
+				$config['cpp_header_image']     = base_url('assets/img/secretcloset-paypal.png'); //Image header url [750 pixels wide by 90 pixels high]
+				$config['return']               = base_url('products/success_payment');
+				$config['production']           = FALSE; //Its false by default and will use sandbox
+				$config["invoice"]              = $order_id; //The invoice id
+				$config["currency_code"]		= 'PHP';
+				$config["lc"]					= 'PH';
+				$config["cpp_cart_border_color"] = 'ffffff';
+				$config["no_note"]				= 0; //[0,1] 0 show, 1 hide
 
-			// $ret = $this->sendToEmail($email,$fname,$lname, $gender,$pass);
-			// if($ret == true)
-						echo json_encode(array('stat' => 1,'msg' => 'Registered Successfully', 'order_id' => $order_id));
-			// else
-			// 	echo json_encode(array('stat'=>2, 'msg' => 'Failed to Register', 'errorMail' => $ret));
-		}
+			
+				$this->load->library('paypal',$config);
+
+				foreach ($this->cart->contents() as $items){
+					$this->paypal->add( $items['name'], $items['price'], $items['qty']);
+				}
+
+				$this->cart->destroy();
+				$this->session->unset_userdata('checkout_user_type');
+				$this->session->set_userdata('new_total', '0.00');
+
+				$vars =  http_build_query($this->paypal->config);
+
+		        if($this->paypal->config['production'] == TRUE){
+		            echo $this->paypal->production_url.$vars;
+		        }else{
+		            echo $this->paypal->sandbox_url.$vars;
+		        }
+			}
+		
 
 	} # End order
 
@@ -650,7 +685,7 @@ class Products extends CI_Controller {
 		            	return true;
 		            else
 		            	return false;
-	} # End sendMail
+	} # End sendToEmail
 
 	public function mailer($username, $password,$title,$message,$recipients,$senderName)
 	{   
@@ -698,7 +733,7 @@ class Products extends CI_Controller {
 	
 		$this->load->view('view_order_received', $data);
 
-	} # End checkout_new_customer
+	} # End order_received
 
 	public function confirm_payment() {
 		# Declare data
@@ -710,7 +745,7 @@ class Products extends CI_Controller {
 	
 		$this->load->view('view_confirm_payment', $data);
 
-	} # End checkout_new_customer
+	} # End confirm_payment
 
 
 	public function checkConfirmPayment(){
@@ -759,10 +794,9 @@ class Products extends CI_Controller {
 			// else
 			// 	echo json_encode(array('stat'=>2, 'msg' => 'Failed to Register', 'errorMail' => $ret));
 		}
-	}
+	} # checkConfirmPayment
 
-	public function order_number_check($order_number)
-	{
+	public function order_number_check($order_number){
 		$count = $this->model_orders->checkOrderNumber($order_number);
 		foreach ($count as $r) {
 			$result_count = $r['or_count'];
@@ -775,7 +809,7 @@ class Products extends CI_Controller {
 		else{
 			return TRUE;
 		}
-	} # End order_number
+	} # End order_number_check
 
 
 
@@ -812,6 +846,33 @@ class Products extends CI_Controller {
 				$this->session->set_userdata('new_total', $dummyTotal);
 
 	} # End remove_item
+
+	public function success_payment(){
+		$data['page_title'] = 'Order Received';
+		$data['specific_categories'] = $this->model_specific_categories->getSpecificCategories();
+		$data['latest_products'] = $this->model_products->getLatestProducts();
+
+		$order_id = $this->input->post('invoice');
+
+		if($this->session->userdata('kueenie_cust_id')){
+			$data['customer_name'] =  $this->session->userdata('kueenie_cust_fname').' '.$this->session->userdata('kueenie_cust_lname');
+			$data['orders'] = $this->model_orders->getOrderDetailsForMessagePage($this->session->userdata('kueenie_cust_id'),$order_id);
+		}
+
+		if($this->input->post('payment_status') == 'Completed'){
+			$this->model_orders->updateOrderAddress(
+						$this->input->post('invoice'),
+						$this->input->post('address_name'), $this->input->post('payer_email'), 
+						$this->input->post('address_street'), $this->input->post('address_city'),
+						$this->input->post('memo'));
+		}else{
+			$data['paypal_payment_status'] = $this->input->post('payment_status');
+			$data['pending_reason'] = $this->input->post('pending_reason');
+		}
+
+		$this->load->view('view_order_received', $data);
+		
+	} # End success_payment
 
 } # End class
 

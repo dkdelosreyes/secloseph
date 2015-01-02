@@ -24,9 +24,23 @@ class Model_orders extends CI_Model {
                             '".$addr_brgy_ship."', '".$addr_mun_ship."','".$addr_prov_ship."', 
                             '".$addr_instruc_ship."', 
                             '".$addr_fname.' '.$addr_lname."', '".$addr_contact."', '".$addr_num."',
-                            '".$addr_brgy_ship."', '".$addr_mun_ship."','".$addr_prov_ship."', 
-                            '".$addr_instruc_ship."'
+                             '".$addr_brgy."', '".$addr_mun."','".$addr_prov."', 
+                            '".$addr_instruc."'
                             )
+                    ");
+    }
+
+    public function updateOrderAddress($order_id, $addr_name_ship, $addr_contact_ship, $addr_num_ship, $addr_prov_ship, $addr_instruc_ship){
+     
+        $query = $this->db->query("
+                        UPDATE orders SET
+                            order_ship_to = '".$addr_name_ship."', 
+                            order_ship_contact = '".$addr_contact_ship."', 
+                            order_ship_address_number = '".$addr_num_ship."',
+                            order_ship_address_province = '".$addr_prov_ship."', 
+                            order_ship_message = '".$addr_instruc_ship."'
+                        WHERE order_id = '".$order_id."'
+                            
                     ");
     }
 

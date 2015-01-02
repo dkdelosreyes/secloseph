@@ -55,8 +55,9 @@
                 </div>
 
                 <hr>
-
-                <div class='row'>
+                
+                <!-- FILTERS - TO BE CONTINUE -->
+                <!-- <div class='row'>
                     <div class="col-md-2">Filter Result:</div>
                     <div class="col-md-4"> 
                     <select name="status"  class="form-control">
@@ -78,7 +79,7 @@
                         <option value="2">Delivered Orders</option>
                     </select>
                     </div>
-                </div>
+                </div> -->
             </div>
             
             <hr>

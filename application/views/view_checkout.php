@@ -156,10 +156,8 @@
 											</table>
 										</div>
 										<a href="" class="shop-more">&laquo;   SHOP MORE</a>
-		                    			<!-- <a href="<? //echo site_url('products/checkout')?>" class="checkout">ORDER NOW   &raquo;</a> -->
 		                    			<input type="submit" id="btnOrder" class="ordernow" data-loading-text="Processing..." value="ORDER NOW    &raquo;">
-					
-										
+
 									</div>
 
 									<!-- END OF SUMMARY
@@ -453,6 +451,7 @@
 													<li><input type="radio" name="paymentMethod" value="gcash">&nbsp;GCASH</li>
 													<li><input type="radio" name="paymentMethod" value="western">&nbsp;WESTERN UNION</li>
 													<li><input type="radio" name="paymentMethod" value="lbc">&nbsp;LBC</li>
+													<li><input type="radio" name="paymentMethod" value="paypal">&nbsp;PAYPAL</li>
 												</ul>
 
 												<div class="row" style="padding-top:30px">
@@ -502,7 +501,14 @@
 		<?php include 'includes/view_login.php'; ?>
 
 		<script type="text/javascript">
+			  var paymentMethod = '';
 		      $(document).ready(function(){
+		      	
+
+		      	$('input:radio[name="paymentMethod"]').change(function(){
+		      		paymentMethod = $(this).val();
+			       
+			    });
 
 		   	  // FOR SHIPPING ADDRESS CHECKBOX========================================================
 		      
@@ -560,9 +566,10 @@
 
 
 
-		<!-- FOR REGISTER -->
+		<!-- FOR CHECKOUT -->
     <script type="text/javascript">
       $(document).ready(function(){
+
         var base = "<?php echo base_url()?>";
         
       $('#waiting').hide(500);
@@ -570,226 +577,237 @@
       $('.glyphicon-email, .glyphicon-pass, .glyphicon-conPass').hide();
 
 
-		// formRegister========================================================
-      $('#checkoutForm').submit(function(){
-        $('#waiting').show(500);
-        $("#btnOrder").button('loading');
+		// form checkout========================================================
+      $('#checkoutForm').submit(function(e){
+      	e.preventDefault();
 
-        $.post($('#checkoutForm').attr('action'), $('#checkoutForm').serialize(), function( data ) {
-          $("#btnOrder").button('reset');
-          $('#waiting').fadeOut("slow", function(){
-            if(data.stat == 0){
-              // ======== REGISTER FORM THINGY ======================================================
-              if(data.msgErrorFname != ""){
-                $('#msgErrorFname').html(data.msgErrorFname);
-                $(".form-fname").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorFname').text('Correct');
-                $(".form-fname").removeClass("has-error").addClass("has-success");
-              }
+      	console.log('paymentMethod -- '+paymentMethod);
+      	if(paymentMethod != 'paypal'){
+      		console.log('sht');
+	        $('#waiting').show(500);
+	        $("#btnOrder").button('loading');
 
-              if(data.msgErrorLname != ""){
-                $('#msgErrorLname').html(data.msgErrorLname);
-                $(".form-lname").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorLname').text('Correct');
-                $(".form-lname").removeClass("has-error").addClass("has-success");
-              }
+	        $.post($('#checkoutForm').attr('action'), $('#checkoutForm').serialize(), function( data ) {
+	          $("#btnOrder").button('reset');
+	          $('#waiting').fadeOut("slow", function(){
+	            if(data.stat == 0){
+	              // ======== REGISTER FORM THINGY ======================================================
+	              if(data.msgErrorFname != ""){
+	                $('#msgErrorFname').html(data.msgErrorFname);
+	                $(".form-fname").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorFname').text('Correct');
+	                $(".form-fname").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorEmail != ""){
-                $('#msgErrorEmail').html(data.msgErrorEmail);
-                $(".form-email").removeClass("has-success").addClass("has-error");
-                $(".glyphicon-email").show().addClass("glyphicon-remove");
-              }else{
-                $('#msgErrorEmail').text('Correct');
-                $(".form-email").removeClass("has-error").addClass("has-success");
-                $(".glyphicon-email").show().addClass("glyphicon-ok");
-              }
+	              if(data.msgErrorLname != ""){
+	                $('#msgErrorLname').html(data.msgErrorLname);
+	                $(".form-lname").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorLname').text('Correct');
+	                $(".form-lname").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorPass != ""){
-                $('#msgErrorPass').html(data.msgErrorPass);
-                $(".form-pass").removeClass("has-success").addClass("has-error");
-                $(".glyphicon-pass").show().addClass("glyphicon-remove");
-              }else{
-                $('#msgErrorPass').text('Correct');
-                $(".form-pass").removeClass("has-error").addClass("has-success");
-                $(".glyphicon-pass").show().addClass("glyphicon-ok");
-              }
+	              if(data.msgErrorEmail != ""){
+	                $('#msgErrorEmail').html(data.msgErrorEmail);
+	                $(".form-email").removeClass("has-success").addClass("has-error");
+	                $(".glyphicon-email").show().addClass("glyphicon-remove");
+	              }else{
+	                $('#msgErrorEmail').text('Correct');
+	                $(".form-email").removeClass("has-error").addClass("has-success");
+	                $(".glyphicon-email").show().addClass("glyphicon-ok");
+	              }
 
-              if(data.msgErrorConPass != ""){
-                $('#msgErrorConPass').html(data.msgErrorConPass);
-                $(".form-conPass").removeClass("has-success").addClass("has-error");
-                $(".glyphicon-conPass").show().addClass("glyphicon-remove");
-              }else{
-                $('#msgErrorConPass').text('Correct');
-                $(".form-conPass").removeClass("has-error").addClass("has-success");
-                $(".glyphicon-conPass").show().addClass("glyphicon-ok");
-              }
+	              if(data.msgErrorPass != ""){
+	                $('#msgErrorPass').html(data.msgErrorPass);
+	                $(".form-pass").removeClass("has-success").addClass("has-error");
+	                $(".glyphicon-pass").show().addClass("glyphicon-remove");
+	              }else{
+	                $('#msgErrorPass').text('Correct');
+	                $(".form-pass").removeClass("has-error").addClass("has-success");
+	                $(".glyphicon-pass").show().addClass("glyphicon-ok");
+	              }
 
-              // ======== BILLING ADDRESS THINGY ======================================================
-              if(data.msgErrorAddrFname != ""){
-                $('#msgErrorAddrFname').html(data.msgErrorAddrFname);
-                $(".form-addr-fname").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrFname').text('Correct');
-                $(".form-addr-fname").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorConPass != ""){
+	                $('#msgErrorConPass').html(data.msgErrorConPass);
+	                $(".form-conPass").removeClass("has-success").addClass("has-error");
+	                $(".glyphicon-conPass").show().addClass("glyphicon-remove");
+	              }else{
+	                $('#msgErrorConPass').text('Correct');
+	                $(".form-conPass").removeClass("has-error").addClass("has-success");
+	                $(".glyphicon-conPass").show().addClass("glyphicon-ok");
+	              }
 
-              if(data.msgErrorAddrLname != ""){
-                $('#msgErrorAddrLname').html(data.msgErrorAddrLname);
-                $(".form-addr-lname").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrLname').text('Correct');
-                $(".form-addr-lname").removeClass("has-error").addClass("has-success");
-              }
+	              // ======== BILLING ADDRESS THINGY ======================================================
+	              if(data.msgErrorAddrFname != ""){
+	                $('#msgErrorAddrFname').html(data.msgErrorAddrFname);
+	                $(".form-addr-fname").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrFname').text('Correct');
+	                $(".form-addr-fname").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorAddrContact != ""){
-                $('#msgErrorAddrContact').html(data.msgErrorAddrContact);
-                $(".form-addr-contact").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrContact').text('Correct');
-                $(".form-addr-contact").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorAddrLname != ""){
+	                $('#msgErrorAddrLname').html(data.msgErrorAddrLname);
+	                $(".form-addr-lname").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrLname').text('Correct');
+	                $(".form-addr-lname").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorAddrNum != ""){
-                $('#msgErrorAddrNum').html(data.msgErrorAddrNum);
-                $(".form-addr-num").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrNum').text('Correct');
-                $(".form-addr-num").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorAddrContact != ""){
+	                $('#msgErrorAddrContact').html(data.msgErrorAddrContact);
+	                $(".form-addr-contact").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrContact').text('Correct');
+	                $(".form-addr-contact").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorAddrProv != ""){
-                $('#msgErrorAddrProv').html(data.msgErrorAddrProv);
-                $(".form-addr-prov").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrProv').text('Correct');
-                $(".form-addr-prov").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorAddrNum != ""){
+	                $('#msgErrorAddrNum').html(data.msgErrorAddrNum);
+	                $(".form-addr-num").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrNum').text('Correct');
+	                $(".form-addr-num").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorAddrMun != ""){
-                $('#msgErrorAddrMun').html(data.msgErrorAddrMun);
-                $(".form-addr-mun").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrMun').text('Correct');
-                $(".form-addr-mun").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorAddrProv != ""){
+	                $('#msgErrorAddrProv').html(data.msgErrorAddrProv);
+	                $(".form-addr-prov").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrProv').text('Correct');
+	                $(".form-addr-prov").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorAddrBrgy != ""){
-                $('#msgErrorAddrBrgy').html(data.msgErrorAddrBrgy);
-                $(".form-addr-brgy").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrBrgy').text('Correct');
-                $(".form-addr-brgy").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorAddrMun != ""){
+	                $('#msgErrorAddrMun').html(data.msgErrorAddrMun);
+	                $(".form-addr-mun").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrMun').text('Correct');
+	                $(".form-addr-mun").removeClass("has-error").addClass("has-success");
+	              }
 
-              if(data.msgErrorAddrLandmark != ""){
-                $('#msgErrorAddrLandmark').html(data.msgErrorAddrLandmark);
-                $(".form-addr-landmark").removeClass("has-success").addClass("has-error");
-              }else{
-                $('#msgErrorAddrLandmark').text('Correct');
-                $(".form-addr-landmark").removeClass("has-error").addClass("has-success");
-              }
+	              if(data.msgErrorAddrBrgy != ""){
+	                $('#msgErrorAddrBrgy').html(data.msgErrorAddrBrgy);
+	                $(".form-addr-brgy").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrBrgy').text('Correct');
+	                $(".form-addr-brgy").removeClass("has-error").addClass("has-success");
+	              }
 
-              // ======== SHIPPING ADDRESS THINGY ======================================================
+	              if(data.msgErrorAddrLandmark != ""){
+	                $('#msgErrorAddrLandmark').html(data.msgErrorAddrLandmark);
+	                $(".form-addr-landmark").removeClass("has-success").addClass("has-error");
+	              }else{
+	                $('#msgErrorAddrLandmark').text('Correct');
+	                $(".form-addr-landmark").removeClass("has-error").addClass("has-success");
+	              }
+
+	              // ======== SHIPPING ADDRESS THINGY ======================================================
+		              if(!$('#shippingAddressCheck').is(':checked')){
+		              	if(data.msgErrorAddrFnameShip != ""){
+		                $('#msgErrorAddrFnameShip').html(data.msgErrorAddrFnameShip);
+		                $(".form-addr-fname-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrFnameShip').text('Correct');
+		                $(".form-addr-fname-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrLnameShip != ""){
+		                $('#msgErrorAddrLnameShip').html(data.msgErrorAddrLnameShip);
+		                $(".form-addr-lname-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrLnameShip').text('Correct');
+		                $(".form-addr-lname-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrContactShip != ""){
+		                $('#msgErrorAddrContactShip').html(data.msgErrorAddrContactShip);
+		                $(".form-addr-contact-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrContactShip').text('Correct');
+		                $(".form-addr-contact-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrNumShip != ""){
+		                $('#msgErrorAddrNumShip').html(data.msgErrorAddrNumShip);
+		                $(".form-addr-num-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrNumShip').text('Correct');
+		                $(".form-addr-num-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrProvShip != ""){
+		                $('#msgErrorAddrProvShip').html(data.msgErrorAddrProvShip);
+		                $(".form-addr-prov-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrProvShip').text('Correct');
+		                $(".form-addr-prov-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrMunShip != ""){
+		                $('#msgErrorAddrMunShip').html(data.msgErrorAddrMunShip);
+		                $(".form-addr-mun-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrMunShip').text('Correct');
+		                $(".form-addr-mun-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrBrgyShip != ""){
+		                $('#msgErrorAddrBrgyShip').html(data.msgErrorAddrBrgyShip);
+		                $(".form-addr-brgy-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrBrgyShip').text('Correct');
+		                $(".form-addr-brgy-ship").removeClass("has-error").addClass("has-success");
+		              }
+
+		              if(data.msgErrorAddrLandmarkShip != ""){
+		                $('#msgErrorAddrLandmarkShip').html(data.msgErrorAddrLandmarkShip);
+		                $(".form-addr-landmark-ship").removeClass("has-success").addClass("has-error");
+		              }else{
+		                $('#msgErrorAddrLandmarkShip').text('Correct');
+		                $(".form-addr-landmark-ship").removeClass("has-error").addClass("has-success");
+		              }
+		          }
+
+	              // ======== FADING ANIMATION THINGY ======================================================
+	              $( "#msgErrorFname, #msgErrorLname, #msgErrorEmail, #msgErrorPass, #msgErrorConPass, #msgErrorAddrFname,#msgErrorAddrLname,#msgErrorAddrContact,#msgErrorAddrNum, #msgErrorAddrProv, #msgErrorAddrMun, #msgErrorAddrBrgy, #msgErrorAddrLandmark" ).hide().fadeIn( "slow");
 	              if(!$('#shippingAddressCheck').is(':checked')){
-	              	if(data.msgErrorAddrFnameShip != ""){
-	                $('#msgErrorAddrFnameShip').html(data.msgErrorAddrFnameShip);
-	                $(".form-addr-fname-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrFnameShip').text('Correct');
-	                $(".form-addr-fname-ship").removeClass("has-error").addClass("has-success");
+	              	$( "#msgErrorAddrFnameShip,#msgErrorAddrLnameShip,#msgErrorAddrContactShip,#msgErrorAddrNumShip, #msgErrorAddrProvShip, #msgErrorAddrMunShip, #msgErrorAddrBrgyShip, #msgErrorAddrLandmarkShip" ).hide().fadeIn( "slow");
 	              }
+	            }
+	                
+	            if(data.stat == 1){
+	              //making forms appear success
+	                $('#msgErrorFname, #msgErrorLname, #msgErrorEmail, #msgErrorPass, #msgErrorConPass, #msgErrorAddrFname,#msgErrorAddrLname,#msgErrorAddrContact, #msgErrorAddrNum, #msgErrorAddrProv, #msgErrorAddrMun, #msgErrorAddrBrgy, #msgErrorAddrLandmark, #msgErrorAddrFnameShip,#msgErrorAddrLnameShip,#msgErrorAddrContactShip, #msgErrorAddrNumShip, #msgErrorAddrProvShip, #msgErrorAddrMunShip, #msgErrorAddrBrgyShip, #msgErrorAddrLandmarkShip').hide();
+	      			$('.glyphicon-email, .glyphicon-pass, .glyphicon-conPass').hide();
+	              
+	                $(".form-group").removeClass("has-error").removeClass("has-success");
+	                $('#checkoutForm').trigger("reset");
+	                $( "#msg" ).removeClass("alert-danger").addClass("alert-success");
+	                $( "#msg" ).hide().fadeIn( "slow").text("Processed Successfully.");
+	                document.location = "<?php echo base_url()?>products/order_received/"+data.order_id;
+	            }
 
-	              if(data.msgErrorAddrLnameShip != ""){
-	                $('#msgErrorAddrLnameShip').html(data.msgErrorAddrLnameShip);
-	                $(".form-addr-lname-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrLnameShip').text('Correct');
-	                $(".form-addr-lname-ship").removeClass("has-error").addClass("has-success");
-	              }
 
-	              if(data.msgErrorAddrContactShip != ""){
-	                $('#msgErrorAddrContactShip').html(data.msgErrorAddrContactShip);
-	                $(".form-addr-contact-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrContactShip').text('Correct');
-	                $(".form-addr-contact-ship").removeClass("has-error").addClass("has-success");
-	              }
+	            // if(data.st == 2){
+	            //   $( "#msg" ).hide().fadeIn( "slow").text("Error: ".data.errorMail);
+	            // }
+	          });
+	        }, 'json');
 
-	              if(data.msgErrorAddrNumShip != ""){
-	                $('#msgErrorAddrNumShip').html(data.msgErrorAddrNumShip);
-	                $(".form-addr-num-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrNumShip').text('Correct');
-	                $(".form-addr-num-ship").removeClass("has-error").addClass("has-success");
-	              }
-
-	              if(data.msgErrorAddrProvShip != ""){
-	                $('#msgErrorAddrProvShip').html(data.msgErrorAddrProvShip);
-	                $(".form-addr-prov-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrProvShip').text('Correct');
-	                $(".form-addr-prov-ship").removeClass("has-error").addClass("has-success");
-	              }
-
-	              if(data.msgErrorAddrMunShip != ""){
-	                $('#msgErrorAddrMunShip').html(data.msgErrorAddrMunShip);
-	                $(".form-addr-mun-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrMunShip').text('Correct');
-	                $(".form-addr-mun-ship").removeClass("has-error").addClass("has-success");
-	              }
-
-	              if(data.msgErrorAddrBrgyShip != ""){
-	                $('#msgErrorAddrBrgyShip').html(data.msgErrorAddrBrgyShip);
-	                $(".form-addr-brgy-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrBrgyShip').text('Correct');
-	                $(".form-addr-brgy-ship").removeClass("has-error").addClass("has-success");
-	              }
-
-	              if(data.msgErrorAddrLandmarkShip != ""){
-	                $('#msgErrorAddrLandmarkShip').html(data.msgErrorAddrLandmarkShip);
-	                $(".form-addr-landmark-ship").removeClass("has-success").addClass("has-error");
-	              }else{
-	                $('#msgErrorAddrLandmarkShip').text('Correct');
-	                $(".form-addr-landmark-ship").removeClass("has-error").addClass("has-success");
-	              }
-	          }
-
-              // ======== FADING ANIMATION THINGY ======================================================
-              $( "#msgErrorFname, #msgErrorLname, #msgErrorEmail, #msgErrorPass, #msgErrorConPass, #msgErrorAddrFname,#msgErrorAddrLname,#msgErrorAddrContact,#msgErrorAddrNum, #msgErrorAddrProv, #msgErrorAddrMun, #msgErrorAddrBrgy, #msgErrorAddrLandmark" ).hide().fadeIn( "slow");
-              if(!$('#shippingAddressCheck').is(':checked')){
-              	$( "#msgErrorAddrFnameShip,#msgErrorAddrLnameShip,#msgErrorAddrContactShip,#msgErrorAddrNumShip, #msgErrorAddrProvShip, #msgErrorAddrMunShip, #msgErrorAddrBrgyShip, #msgErrorAddrLandmarkShip" ).hide().fadeIn( "slow");
-              }
-            }
-                
-            if(data.stat == 1){
-              //making forms appear success
-                $('#msgErrorFname, #msgErrorLname, #msgErrorEmail, #msgErrorPass, #msgErrorConPass, #msgErrorAddrFname,#msgErrorAddrLname,#msgErrorAddrContact, #msgErrorAddrNum, #msgErrorAddrProv, #msgErrorAddrMun, #msgErrorAddrBrgy, #msgErrorAddrLandmark, #msgErrorAddrFnameShip,#msgErrorAddrLnameShip,#msgErrorAddrContactShip, #msgErrorAddrNumShip, #msgErrorAddrProvShip, #msgErrorAddrMunShip, #msgErrorAddrBrgyShip, #msgErrorAddrLandmarkShip').hide();
-      			$('.glyphicon-email, .glyphicon-pass, .glyphicon-conPass').hide();
-              
-                $(".form-group").removeClass("has-error").removeClass("has-success");
-                $('#checkoutForm').trigger("reset");
-                $( "#msg" ).removeClass("alert-danger").addClass("alert-success");
-                $( "#msg" ).hide().fadeIn( "slow").text("Processed Successfully.");
-                document.location = "<?php echo base_url()?>products/order_received/"+data.order_id;
-            }
-
-            // if(data.st == 2){
-            //   $( "#msg" ).hide().fadeIn( "slow").text("Error: ".data.errorMail);
-            // }
-          });
-              
-        }, 'json');
+		}else{
+			$.post($('#checkoutForm').attr('action'), $('#checkoutForm').serialize(), function(data){
+				document.location = data;
+			});
+		}
         return false;     
       });
-// END formRegister========================================================
+// END formCheckout========================================================
 	
     });
     </script>
-<!-- END FOR REGISTER -->
+<!-- END FOR CHECKOUT -->
 
 		
 	
