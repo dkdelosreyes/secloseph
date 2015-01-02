@@ -54,7 +54,7 @@
 		                   						}
 									    	?>
 
-									    	<p>Dear <span style="font-weight:700">,</span></p>
+									    	<p>Dear <span style="font-weight:700"><?php echo $customer_name ?>,</span></p>
 											
 											<?php if(!isset($paypal_payment_status) || $paypal_payment_status == 'Completed') {?>
 										    	<p style="margin-top:20px;">Thank you for your order. Your order confirmation number is: <span  style="font-weight:700"> <?php echo $order_id.br() ?> </span></p>
