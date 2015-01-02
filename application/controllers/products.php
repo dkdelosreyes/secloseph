@@ -18,6 +18,7 @@ class Products extends CI_Controller {
 		$this->load->model('model_banks');
 		$this->load->model('model_confirm_payments');
 		$this->load->model('model_images');
+		$this->load->model('model_paypal_facilitator');
 		
 	} # End construct
 
@@ -610,7 +611,9 @@ class Products extends CI_Controller {
 				// 	echo json_encode(array('stat'=>2, 'msg' => 'Failed to Register', 'errorMail' => $ret));
 			
 			}else{
-				$config['business']             = 'diannekatherinedelosreyes-facilitator@gmail.com'; //Your PayPal account
+				$paypal_facilitator 			= $this->model_paypal_facilitator->getPaypalAccount();
+
+				$config['business']             = $paypal_facilitator->paypal_email;
 				$config['cpp_header_image']     = base_url('assets/img/secretcloset-paypal.png'); //Image header url [750 pixels wide by 90 pixels high]
 				$config['return']               = base_url('products/success_payment');
 				$config['production']           = FALSE; //Its false by default and will use sandbox

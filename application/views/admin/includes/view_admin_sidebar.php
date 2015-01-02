@@ -18,6 +18,7 @@
             <li><a href="<?php echo base_url('admin/articles')?>">Articles</a></li>
             <li><a href="<?php echo base_url('admin/featurette')?>">Home Page Featurette</a></li>
             <li><a href="<?php echo base_url('admin/payment')?>">Payment Method</a></li>
+            <li><a href="<?php echo base_url('admin/paypal_facilitator')?>">Paypal Account</a></li>
             <!--<li><a href="<?php echo base_url('admin/bank')?>">Banks</a></li>-->
           </ul>
           

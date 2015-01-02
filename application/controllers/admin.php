@@ -30,6 +30,9 @@ class Admin extends CI_Controller {
 			$crud->set_table('main_categories');
 			$crud->set_subject('Main Categories');
 
+			$crud->display_as('main_cat_name', 'Main Category Name')
+				 ;
+
 			$output = $crud->render();
 			$this->tableOutput($output);
 	} # End categories
@@ -40,6 +43,10 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('sub_categories');
 			$crud->set_subject('Sub-Categories');
+
+			$crud->display_as('sub_cat_name', 'Sub-Category Name')
+				 ->display_as('main_categories_main_cat_id', 'Main Category')
+				 ;
 
 			$crud->set_relation('main_categories_main_cat_id','main_categories','main_cat_name');
 
@@ -54,6 +61,10 @@ class Admin extends CI_Controller {
 			$crud->set_table('specific_categories');
 			$crud->set_subject('Specific Categories');
 
+			$crud->display_as('spec_cat_name', 'Specific Category Name')
+				 ->display_as('sub_categories_sub_cat_id', 'Sub-Category')
+				 ;
+
 			$crud->set_relation('sub_categories_sub_cat_id','sub_categories','sub_cat_name');
 
 			$output = $crud->render();
@@ -66,6 +77,15 @@ class Admin extends CI_Controller {
 			$crud->set_theme('datatables');
 			$crud->set_table('brands');
 			$crud->set_subject('Brands');
+			$crud->unset_add();
+
+			$crud->display_as('brand_name', 'Name')
+				 ->display_as('brand_description', 'Description')
+				 ->display_as('brand_url', 'Url')
+				 ->display_as('brand_photo_url', 'Photo')
+				 ->display_as('brand_sell_type', 'Sell Type')
+				 ->display_as('main_categories_main_cat_id', 'Main Category')
+				 ;
 
 			$crud->set_field_upload('brand_photo_url','assets/img');
 			$crud->set_relation('main_categories_main_cat_id','main_categories','main_cat_name');
@@ -118,9 +138,10 @@ class Admin extends CI_Controller {
 			$crud->set_table('products');
 			$crud->set_subject('Products');
 
-			$crud->unset_columns('prod_short_description','prod_description','prod_delivery_info');
 			$crud->display_as('prod_name', 'Product')
 				 ->display_as('prod_price_ret', 'Retail Price')
+				 ->display_as('prod_date_added', 'Date Added')
+				 ->display_as('prod_date_updated', 'Date Updated')
 				 ->display_as('prod_short_description', 'Short Description')
 				 ->display_as('prod_description', 'Long Description')
 				 ->display_as('prod_delivery_info', 'Delivery Information')
@@ -129,6 +150,7 @@ class Admin extends CI_Controller {
 				 ->display_as('prod_delivery_amount_free', 'Free Delivery Min Amount')
 				 ->display_as('prod_days_return_free', 'Days for Free Return')
 				 ->display_as('prod_cod_allowed', 'Cash On Delivery')
+				 ->display_as('prod_record_status', 'Record Status')
 				 ;
 
 			$crud->set_relation('categories_cat_id','specific_categories','spec_cat_name');
@@ -307,6 +329,11 @@ class Admin extends CI_Controller {
 			$crud->unset_add();
 			$crud->unset_delete();
 
+			$crud->display_as('cms_title','Title')
+				->display_as('cms_content','Content')
+				->display_as('cms_photo_url','Photo')
+				;
+
 			$crud->set_field_upload('cms_photo_url','assets/cms');
 
 			$crud->unset_columns('cms_date_updated');
@@ -327,6 +354,10 @@ class Admin extends CI_Controller {
 			$crud->set_subject('Articles');
 			$crud->unset_add();
 			$crud->unset_delete();
+
+			$crud->display_as('article_title','Title')
+				->display_as('article_content','Content')
+				;
 
 			$crud->unset_columns('article_name','article_date_updated');
 			if ($crud->getState() == 'edit' || $crud->getState() == 'update') {
@@ -354,6 +385,12 @@ class Admin extends CI_Controller {
 
 			$crud->unset_columns('article_name');
 			$crud->set_field_upload('fea_photo_url','assets/featurette');
+
+			$crud->display_as('fea_name','Name')
+				->display_as('fea_title','Title')
+				->display_as('fea_content','Content')
+				->display_as('fea_photo_url','Photo')
+				;
 
 			if ($crud->getState() == 'edit' || $crud->getState() == 'update') {
             	$crud->unset_edit_fields('fea_name');
@@ -400,6 +437,30 @@ class Admin extends CI_Controller {
 			$output = $crud->render();
 			$this->tableOutput($output);	
     } # End payment
+
+    public function paypal_facilitator(){
+    		$crud = new grocery_CRUD();
+
+			$crud->set_theme('datatables');
+			$crud->set_table('paypal_facilitator');
+			$crud->set_subject('Paypal Account');
+
+			$crud->unset_add();
+			$crud->unset_delete();
+
+			$crud->display_as('paypal_name','Name')
+				->display_as('paypal_email','Paypal Account');
+
+			if ($crud->getState() == 'edit' || $crud->getState() == 'update') {
+            	$crud->unset_edit_fields('paypal_name');
+
+            }
+
+			$output = $crud->render();
+			$this->tableOutput($output);	
+    } # End payment
+
+    
 
 	// TABLE OUTPUT FOR GROCERY CRUD ======================================================
 	public function tableOutput($output = null)
