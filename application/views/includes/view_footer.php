@@ -19,14 +19,14 @@
 											if(!empty($specific_categories)){
 					                    		foreach($specific_categories as $p):?>
 													<div class="col-md-3">
-														<?echo $p->spec_cat_name.br();?>
+														<?php echo $p->spec_cat_name.br();?>
 													</div>
-					           					<?endforeach;
+					           					<?php endforeach;
 					                    	}else{?>
 													<div class="col-md-3">
 														No Categories Yet
 													</div>
-					           					<?
+					           					<?php
 					                    	}
 										?>
 									</div>
@@ -42,14 +42,14 @@
 											if(!empty($latest_products)){
 					                    		foreach($latest_products as $p):?>
 													<div class="col-md-3">
-														<?echo $p->prod_name.br();?>
+														<?php echo $p->prod_name.br();?>
 													</div>
-					           					<?endforeach;
+					           					<?php endforeach;
 					                    	}else{?>
 													<div class="col-md-3">
 														No Products Yet
 													</div>
-					           					<?
+					           					<?php
 					                    	}
 										?>
 									</div>

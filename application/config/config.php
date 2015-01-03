@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/mamish/';
+$config['base_url']	= 'http://localhost/GitHub/secloseph/';
 // $config['base_url']	= 'http://theggera.com/secret-closet/';
 
 /*

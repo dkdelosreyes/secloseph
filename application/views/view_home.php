@@ -65,7 +65,7 @@
 										<div class="content">
 											<img src="<?php echo base_url('assets/img').'/'.$b->brand_url.'.png'?>" alt="" class="logo img-responsive">
 											<p>
-												<?php echo $b->brand_description ?>
+												<?php echo $b->brand_description; ?>
 											</p>
 											<a href="<?php echo site_url('brands').'/'.$b->brand_url?>" class="info">SHOP NOW</a>
 										</div>
@@ -92,20 +92,20 @@
 						
 							<?php
 								if(!empty($articles)){
-		                    		foreach($articles as $p):?>
+		                    		foreach($articles as $p): ?>
 
 		                    			<div class="col-md-6">
 											<span class="title">
-												<?echo $p->article_title?>
+												<?php echo $p->article_title; ?>
 											</span>
 											<?php echo br(2) ?>
 											<span class="article">
-												<?echo $p->article_content?>
+												<?php echo $p->article_content; ?>
 											</span>
 
 										</div>
 
-		           					<?endforeach;
+		           					<?php endforeach;
 		                    	}
 							?>
 
@@ -138,9 +138,9 @@
 			                    	}
 								?>
 
-								<span class="title"> <? echo $title?> </span>
+								<span class="title"> <?php echo $title?> </span>
 
-								<span class="text"> <? echo $content?> </span>
+								<span class="text"> <?php echo $content?> </span>
 								<?php echo br(3) ?>
 								<!-- <button class="btn btn-primary btn-lg">Some Button Here!</button> -->
 							</div>
@@ -222,5 +222,4 @@
 					</script>
 	
 </body>
-	
 </html>
