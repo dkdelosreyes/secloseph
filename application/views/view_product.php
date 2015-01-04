@@ -37,13 +37,13 @@
 											<ol class="breadcrumb">
 											<li><a href="<?php echo site_url()?>">Home</a></li>
 											<li><a href="<?php echo site_url()?>">Brands</a></li>
-											<li><a href="<?php echo site_url('brands/'. $brand->brand_url) ?>"><?php echo $brand->brand_name?></a></li>
-											<li class="active"><?php echo $product_name ?></li>
+											<li><a href="<?php echo site_url('brands/'. $brand->brand_url); ?>"><?php echo $brand->brand_name; ?></a></li>
+											<li class="active"><?php echo $product_name; ?></li>
 											</ol>
 
 										</div>
 
-										<form action="<?php echo site_url('products/addToCart')?>" method="post" role="form" id="formAddToCart">
+										<form action="<?php echo site_url('products/addToCart'); ?>" method="post" role="form" id="formAddToCart">
 											<?php
 												$stockStatus = "";
 
@@ -75,40 +75,40 @@
 				                    			}
 			                    			?>
 
-			                    						<input type="hidden" name="itemPrice" id="itemPrice" value="<? echo $prod_price_ret?>">
-														<input type="hidden" name="itemName" id="itemName" value="<? echo $prod_name?>">
-														<input type="hidden" name="itemColor" id="itemColor" value="<? echo $color_name?>">
+			                    						<input type="hidden" name="itemPrice" id="itemPrice" value="<?php echo $prod_price_ret; ?>">
+														<input type="hidden" name="itemName" id="itemName" value="<?php echo $prod_name; ?>">
+														<input type="hidden" name="itemColor" id="itemColor" value="<?php echo $color_name; ?>">
 														<input type="hidden" id="itemId" name="itemId" value="">
-														<input type="hidden" name="deliveryInfo" id="deliveryInfo" value="<?php echo $prod_delivery_info ?>">
+														<input type="hidden" name="deliveryInfo" id="deliveryInfo" value="<?php echo $prod_delivery_info; ?>">
 														
 
 														<!-- ITEM IMAGE
 														=============================================================== -->
 														<div class="col-md-1" style="padding-right:0px">
-			                    							<?
+			                    							<?php
 			                    								if(!empty($images)){
-				                    								foreach($images as $p):?>
+				                    								foreach($images as $p): ?>
 				                    									<div class="img-thumb-wrapper">
-						                    								<img src="<?php echo base_url('assets/products/'.$p->img_photo_url)?>" class="img-thumb" alt="">
+						                    								<img src="<?php echo base_url('assets/products/'.$p->img_photo_url); ?>" class="img-thumb" alt="">
 						                    							</div>
-				                    								<? endforeach;
-				                    							}else{?>
+				                    								<?php endforeach;
+				                    							}else{ ?>
 				                    								<div class="img-thumb-wrapper">
-						                    							<img src="<?php echo base_url('assets/img/product_default.png')?>" class="img-thumb" alt="">
+						                    							<img src="<?php echo base_url('assets/img/product_default.png'); ?>" class="img-thumb" alt="">
 						                    						</div>
-				                    							<?}
+				                    							<?php }
 				                    						?>
 														</div>
 
 														<div class="col-md-4" style="text-align: center;">
-															<img src="<?php echo $preview_photo?>" class="img-responsive" id="img-zoom" data-large="<?php echo $preview_photo?>">
+															<img src="<?php echo $preview_photo; ?>" class="img-responsive" id="img-zoom" data-large="<?php echo $preview_photo?>">
 														</div> 
 
 														<!-- ITEM DESCRIPTION
 														=============================================================== -->
 			                    						<div class="col-md-4">
 			                    							<span class="prod-name"><?php echo $prod_name.br(); ?></span>
-			                    							PHP <?php echo number_format($prod_price_ret, 2) ?>
+			                    							PHP <?php echo number_format($prod_price_ret, 2); ?>
 
 			                    							<hr>
 
@@ -121,19 +121,19 @@
 
 			                    							<div class="delivery-info">
 				                    							<span class="label">Delivery Info:</span><br><br>
-				                    							<span class="description"><?php echo $prod_delivery_info ?></span><br><br>
+				                    							<span class="description"><?php echo $prod_delivery_info; ?></span><br><br>
 
 				                    							<div class="row">
-					                    							<div class="col-md-10">Delivery above P<?echo $prod_delivery_amount_free?></div>
+					                    							<div class="col-md-10">Delivery above P<?php echo $prod_delivery_amount_free; ?></div>
 																	<div class="col-md-2">Free</div>
 																</div>
 																<div class="row">
-					                    							<div class="col-md-10"><?echo $prod_days_return_free?> Days Return</div>
+					                    							<div class="col-md-10"><?php echo $prod_days_return_free; ?> Days Return</div>
 																	<div class="col-md-2">Free</div>
 																</div>
 																<div class="row">
 					                    							<div class="col-md-10">Cash On Delivery</div>
-																	<div class="col-md-2"><?echo $prod_cod_allowed?></div>
+																	<div class="col-md-2"><?php echo $prod_cod_allowed; ?></div>
 																</div>
 			                    							</div>
 															
@@ -141,11 +141,11 @@
 			                    							<span class="label">Color:</span><br><br>
 			                    							<div class="color-box">
 																<div class="color-box" style="margin:3px 3px 0px 0px;height:40x;width:50px;overflow:hidden">
-																	<?if($color_photo_palette==''){?>
-																		<img src="<?php echo $preview_photo?>" alt="<?php echo $color_name?>" title="<?php echo $color_name?>" style="width:100%;">
-																	<?}else{?>
-																		<img src="<? echo $color_photo_palette?>" alt="<?php echo $color_name?>" title="<?php echo $color_name?>" style="width:100%;">
-																	<?}?>
+																	<?php if($color_photo_palette==''){ ?>
+																		<img src="<?php echo $preview_photo; ?>" alt="<?php echo $color_name; ?>" title="<?php echo $color_name; ?>" style="width:100%;">
+																	<?php }else{ ?>
+																		<img src="<?php echo $color_photo_palette; ?>" alt="<?php echo $color_name; ?>" title="<?php echo $color_name; ?>" style="width:100%;">
+																	<?php } ?>
 																</div>
 																<div class="clearfix"></div>
 															</div>
@@ -168,21 +168,21 @@
 
 		                    						<?php 
 		                    						foreach($color as $p){ ?>
-		                    							
+		                    								
 															<!-- <a href="<?php echo base_url('products/viewProduct/'.$p['color_id'])?>" style="float: left;">
 																<div class="color-box" style="margin:3px 3px 0px 0px">
-																	<img src="<? echo site_url('assets/palette/'.$p['color_photo_palette'])?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:50px;height:40px">
+																	<img src="<?php echo site_url('assets/palette/'.$p['color_photo_palette'])?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:50px;height:40px">
 																</div>
 																<div class="clearfix"></div>
 															</a> -->
 
-															<a href="<?php echo base_url('products/viewProduct/'.$p['color_id'])?>" style="float: left;">
+															<a href="<?php echo base_url('products/viewProduct/'.$p['color_id']); ?>" style="float: left;">
 																<div class="color-box" style="margin:3px 3px 0px 0px;height:40x;width:50px;overflow:hidden">
-																	<?if($p['color_photo_palette']==''){?>
-																		<img src="<?php echo $preview_photo?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>" style="width:100%;">
-																	<?}else{?>
-																		<img src="<? echo site_url('assets/palette/'.$p['color_photo_palette'])?>" alt="<?php echo $p['color_name']?>" title="<?php echo $p['color_name']?>"  style="width:100%;">
-																	<?}?>
+																	<?php if($p['color_photo_palette']==''){ ?>
+																		<img src="<?php echo $preview_photo; ?>" alt="<?php echo $p['color_name']; ?>" title="<?php echo $p['color_name']; ?>" style="width:100%;">
+																	<?php }else{ ?>
+																		<img src="<?php echo site_url('assets/palette/'.$p['color_photo_palette']); ?>" alt="<?php echo $p['color_name']; ?>" title="<?php echo $p['color_name']; ?>"  style="width:100%;">
+																	<?php } ?>
 																</div>
 																<div class="clearfix"></div>
 															</a>
@@ -198,7 +198,7 @@
 											<div id="divRetail">
 												<!-- <h3>RETAIL</h3> -->
 
-												<?if(!empty($sizes)){
+												<?php if(!empty($sizes)){
 		                    						foreach($sizes as $p){
 		                    							// Determining if the product has sizes
 		                    							if($p['size_name'] != "No Size"){ ?>
@@ -206,18 +206,18 @@
 		                    								<div class="form-group form-size-retail">
 		                    									<select name="size-retail" id="size-retail" class="form-control">
 				                    								<option value="" >Choose Size</option>
-				                    									<?foreach($sizes as $p):
+				                    									<?php foreach($sizes as $p):
 				                    									if($p['item_stock'] != 0){?>
-							                    					<option value="<? echo $p['size_name']?>" data-stocks="<? echo $p['item_stock']?>" data-item-id="<? echo $p['item_id']?>"><? echo $p['size_name']?></option>
-						                    							<? }else{ ?>
-						                    						<option value="<? echo $p['size_name']?>" data-stocks="<? echo $p['item_stock']?>" data-item-id="<? echo $p['item_id']?>" disabled><? echo $p['size_name']?></option>
-						                    							<? }
+							                    					<option value="<?php echo $p['size_name']; ?>" data-stocks="<?php echo $p['item_stock']; ?>" data-item-id="<?php echo $p['item_id']; ?>"><?php echo $p['size_name']; ?></option>
+						                    							<?php }else{ ?>
+						                    						<option value="<?php echo $p['size_name']; ?>" data-stocks="<?php echo $p['item_stock']; ?>" data-item-id="<?php echo $p['item_id']; ?>" disabled><?php echo $p['size_name']; ?></option>
+						                    							<?php }
 						                    							endforeach; ?>
 				                    							</select>
 				                    							<label class="control-label" id="msgErrorSizeRetail" style="font-size:12px;margin-bottom:0px"></label><br>
 				                    						</div>
 
-		                    							<?
+		                    							<?php
 		                    							} // If sizes is not applicable to a product
 		                    							else{ 
 		                    								if($p['item_stock'] > 10){
@@ -246,11 +246,11 @@
 
 										
 											<br>
-											<button class="wishlistBtn" style="padding: 14px 20px;"><span class="glyphicon glyphicon-heart" style="font-size: 10px;"></span>     WISHLIST</button>
-		                    				<input type="submit" class="submitBtn" id="btnAddToCart"  data-loading-text="Processing..."  value="ADD TO BAG">
+											<button class="wishlistBtn" style="padding: 14px 20px;"><span class="glyphicon glyphicon-heart" style="font-size: 10px;"></span>     <span style="font-size: 12px;">WISHLIST</span></button>
+		                    				<input type="submit" class="submitBtn" id="btnAddToCart"  data-loading-text="Processing..."  style="font-size: 12px;" value="ADD TO BAG">
 											<div class="clearfix"></div>
 											<br />
-											<span id="stockStatus" style="font-size: 11px;"><? echo $stockStatus;?></span>
+											<span id="stockStatus" style="font-size: 11px;"><?php echo $stockStatus; ?></span>
 		                    			</form>
 		                    		</div>
 		                    	</div>
@@ -260,11 +260,6 @@
 		                    		<div class="col-md-12">
 		                    			<br><br><span class="label">YOU MAY ALSO LIKE</span><br>
 		                    			<hr>
-
-
-
-
-
 
 		                    			<div id="carousel-example-generic2" class="carousel slide" data-ride="carousel" style="padding:20px 100px 0px 100px;clear:both">
         
@@ -300,26 +295,26 @@
 																			if(!empty($like_preview_photo[$ctr])){
 																				foreach ($like_preview_photo[$ctr] as $q) :?>
 																					<img src="<?php echo base_url('assets/products/'.$q->img_photo_url)?>" alt="" style="vertical-align: middle;margin:0px;width:100%;height:auto">
-																				<?endforeach;
+																				<?php endforeach;
 																				$ctr++;
-																			}else{?>
-																				<img src="<?php echo base_url('assets/img/product_default.png')?>" alt="" style="vertical-align: middle;margin:0px;width:100%;height:auto" >
-																			<?}
+																			}else{ ?>
+																				<img src="<?php echo base_url('assets/img/product_default.png'); ?>" alt="" style="vertical-align: middle;margin:0px;width:100%;height:auto" >
+																			<?php }
 																		?>
 															    		
 															      	</div>
 
 																    <div class="caption" style="height:150px;overflow:hidden;">
-																    	<span class="product-name" style="font-size: 18px;"><?php echo $p->prod_name?></span>
+																    	<span class="product-name" style="font-size: 18px;"><?php echo $p->prod_name; ?></span>
 																		<br>
-																		<span class="product-desc" style="color: #969696;"><?php echo $p->spec_cat_name?></span>
+																		<span class="product-desc" style="color: #969696;"><?php echo $p->spec_cat_name; ?></span>
 																		<hr style="margin-top:1px; margin-bottom:5px">
 																		<span class="product-desc" style="color: #969696; font-size:10px">
-																		<? echo $p->prod_short_description ?>
+																		<?php echo $p->prod_short_description; ?>
 																		</span>
 																		<br>
 																		<div class="col-md-12" style="text-align: left; padding: 10px 0;">
-																			<span class="product-price">PHP <?php echo number_format($p->prod_price_ret, 2)?></span>
+																			<span class="product-price">PHP <?php echo number_format($p->prod_price_ret, 2); ?></span>
 																		</div>
 																    </div>
 
@@ -337,7 +332,7 @@
 
 													}else if ($total == 0 && $remainder>0) { ?>
 														</div> </div> 
-													<? }
+													<?php }
 
 												} // == END OF FOREACH
 											}?>
@@ -516,27 +511,4 @@
 
 	
 </body>
-
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

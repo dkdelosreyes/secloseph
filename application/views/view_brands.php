@@ -41,7 +41,7 @@
 							
 							<ul class="nav navbar-nav navbar-right">
 								<!-- <li><a href="#">Wishlist</a></li> -->
-								<li><a href="<? echo base_url('products/confirm_payment')?>">Confirm Payment</a></li>
+								<li><a href="<?php echo base_url('products/confirm_payment')?>">Confirm Payment</a></li>
 								<li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
 								<li><a href="<?php echo base_url('home/register')?>">Register</a></li>
 							</ul>
@@ -65,14 +65,14 @@
 									if(!empty($sub_categories)){
 				                    	foreach($sub_categories as $p):?>
 				                    		<li><a href="<?echo $controller_link.'/sub/'.$p->sub_cat_id?>">
-				                   				<?echo $p->sub_cat_name.br();?></a>
+				                   				<?php echo $p->sub_cat_name.br();?></a>
 											</li>
-				           				<?endforeach;
+				           				<?php endforeach;
 				                   	}else{?>
 										<li><a href="#">
 			                   				No Categories under this brand</a>
 										</li>
-				           				<?
+				           				<?php
 				                   	}
 								?>
 							</ul>
@@ -97,7 +97,7 @@
 									</p>
 									<span class="label">RECENT ITEMS</span>
 									<hr>
-									<?
+									<?php
 										if(!empty($top_recent_products)){
 											$counter = 0;
 		                    				foreach($top_recent_products as $p):?>
@@ -108,16 +108,16 @@
 															if(!empty($top_preview_photo[$counter])){
 																foreach ($top_preview_photo[$counter] as $q) :?>
 																	<img src="<?php echo base_url('assets/products/'.$q->img_photo_url)?>" alt="" >
-																<?endforeach;
+																<?php endforeach;
 																$counter++;
-															}else{?>
+															}else{ ?>
 																<img src="<?php echo base_url('assets/img/product_default.png')?>" alt="" >
-															<?}
+															<?php }
 														?>
 		                    						</a>
 		                    					</div>
 
-			                   				<?endforeach; 
+			                   				<?php endforeach; 
 		                    			}else{
 		                   					echo "<div>No Products Yet</div>";
 		                   				}
@@ -146,12 +146,12 @@
 												<option value="<?echo $p->spec_cat_id;?>">
 													<?echo $p->spec_cat_name.br();?>
 												</option>
-				           					<?endforeach;
+				           					<?php endforeach;
 				                    	}else{?>
 												<option value="">
 													No Categories Yet
 												</option>
-				           					<?
+				           					<?php
 				                    	}
 									?>
 									</select>
@@ -179,11 +179,11 @@
 												if(!empty($preview_photo[$counter])){
 													foreach ($preview_photo[$counter] as $p) :?>
 														<img src="<?php echo base_url('assets/products/'.$p->img_photo_url)?>" alt="" class="img-responsive">
-													<?endforeach;
+													<?php endforeach;
 													$counter++;
 												}else{?>
 													<img src="<?php echo base_url('assets/img/product_default.png')?>" alt="" class="img-responsive">
-												<?}
+												<?php }
 											?>
 										</div>
 										<div class="product-details">
@@ -192,7 +192,7 @@
 											<span class="product-desc"><?php echo $a->spec_cat_name?></span>
 											<hr style="margin-top:3px">
 											<span class="product-desc">
-											<? echo $a->prod_short_description ?>
+											<?php echo $a->prod_short_description ?>
 											</span><br><br>
 											<div class="col-md-12" style="text-align: left; padding: 10px 0;">
 												<span class="product-price">PHP <?php echo number_format($a->prod_price_ret, 2)?></span>
@@ -201,7 +201,7 @@
 										</a>
 									</div>
 
-							<?  endforeach;
+							<?php endforeach;
 							}else{
 								echo "<center>No Products Available for this category</center>";
 							}?>
