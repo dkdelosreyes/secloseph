@@ -33,7 +33,7 @@
 								<li><a href="<?php echo site_url('cart')?>">
 									
 								
-									<?php echo nbs(10) ?>MY CART 
+									<?php echo nbs(10) ?>MY CART
 								</a></li>
 							</ul>
 						</div><!--/.nav-collapse -->

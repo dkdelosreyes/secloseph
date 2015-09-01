@@ -23,11 +23,11 @@
 							<ul class="nav navbar-nav navbar-right">
 								<!-- <li><a href="#">Wishlist</a></li> -->
 								<li><a href="<? echo base_url('products/confirm_payment')?>">Confirm Payment</a></li>
-								<? if(!$this->session->userdata('kueenie_cust_id')){ ?>
+								<?php if(!$this->session->userdata('kueenie_cust_id')){ ?>
 										<li><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
 										<li><a href="<? echo base_url('home/register')?>">Register</a></li>
 
-								<?	}else{ ?>
+								<?php }else{ ?>
 										<li class="dropdown">
 								          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
 								          <ul class="dropdown-menu">
@@ -37,7 +37,7 @@
 								          </ul>
 								        </li>
 
-								<? 	} ?>
+								<?php } ?>
 								
 								 	
 							</ul>

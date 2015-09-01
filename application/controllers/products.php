@@ -184,6 +184,7 @@ class Products extends CI_Controller {
 	} # End cart
 
 	public function updateCart(){
+			/*
 			$i = 1;
 			foreach ($this->cart->contents() as $items){
 					$itemId = $this->input->post($i.'itemid');
@@ -245,7 +246,28 @@ class Products extends CI_Controller {
 			
 				$i++;
 			}
-			$this->load->view('view_cart', $data);
+			*/
+			
+			$i = 1;
+			$push = array();
+			foreach ($this->cart->contents() as $items) {
+
+				
+				$rowid = $items['rowid'];
+				$quantity = $this->input->post($i.'qty');
+
+				$data = array(
+						'rowid' => $rowid,
+						'qty'	=> $quantity
+					);
+
+				array_push($push, $data);
+				$i++;
+			}
+			$this->cart->update($push);
+
+			redirect('cart','refresh');
+			
 			
 	} # End updateCart
 	
@@ -846,12 +868,13 @@ class Products extends CI_Controller {
 		$dummyTotal = 0;
 
 				foreach ($this->cart->contents() as $items):
-					if ($items['discount_price'] > 0) 
-						$dummyTotal += $items['discount_price'] * $items['qty'];
-					else
-						$dummyTotal += $items['price'] * $items['qty'];
+
+					$dummyTotal += ($items['discount_price'] > 0 ? $items['discount_price'] * $items['qty'] : $items['price'] * $items['qty']);
+
 				endforeach;
 
+				$dummyTotal = ($dummyTotal > 0 ? $dummyTotal : '0.00');
+				
 				$this->session->set_userdata('new_total', $dummyTotal);
 
 	} # End remove_item
