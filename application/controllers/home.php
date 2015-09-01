@@ -20,8 +20,7 @@ class Home extends CI_Controller {
 	} # End construct
 
 	public function index() {
-
-		# Declare data
+		// # Declare data
 		$data['page_title'] = 'Secret Closet | Home';
 		$data['specific_categories'] = $this->model_specific_categories->getSpecificCategories();
 		$data['latest_products'] = $this->model_products->getLatestProducts();
